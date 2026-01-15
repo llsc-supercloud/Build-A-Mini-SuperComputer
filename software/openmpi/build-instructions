@@ -1,0 +1,30 @@
+Using the instructions at: https://mattplayschess.com/build-open-mpi/ as our guide. 
+Note that we have a shared file system - that is where we want to build the code
+openmpi-5.0.9.tar.gz 
+
+# setup 
+mkdir -p /orcd/software/openmpi/{build,code,install} 
+
+# Get the code 
+cd /orcd/software /openmpi/ wget https://download.open-mpi.org/release/open-mpi/v5/openmpi-5.0.9.tar.gz 
+
+# untar it 
+tar -xzvf openmpi-5.0.9.tar.gz -C /orcd/software/openmpi/code 
+
+# Navigate to the build directory
+cd /orcd/software/openmpi/build 
+
+# Start the build and install process
+sudo /orcd/software/openmpi/code/openmpi-5.0.9/configure -prefix=/orcd/software/openmpi/install |& tee config.out 
+sudo make -j 8 |& tee make.out 
+sudo make install |& tee install.out
+
+Finally - you need to make sure that the bin directory is in your path.
+The example copies the files to the user's bin directory - the correct approach is 
+to add the path to your path.  
+NOTE: This will need to be done in every terminal and every time unless the path 
+gets added permanently as if done on large shared systems.
+
+echo $PATH
+export PATH=$PATH:/path_to_openmpi_bin_directory
+
