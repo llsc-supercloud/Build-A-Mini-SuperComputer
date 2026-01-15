@@ -1,0 +1,33 @@
+# install the mariadb server
+apt install mariadb-server
+
+#set the password for the root user, set the permissions
+cat /dev/urandom | tr -dc "[:alnum:]-_" | head -c25 > /root/mysql_slurm_password.txt
+chmod 0600 /root/mysql_slurm_password.tx
+
+# create the database
+echo "CREATE DATABASE slurm_acct_db CHARACTER SET utf8; GRANT ALL PRIVILEGES ON slurm_acct_db.* TO slurm@localhost IDENTIFIED BY '$(cat /root/mysql_slurm_password.txt)';" | mysql -u root
+
+# create the slurmdbd configuration ( /etc/slurm/slurmdbd.conf)
+AuthType=auth/munge
+	DbdAddr=$(hostname -s)
+	DbdHost=$(hostname -s)
+	SlurmUser=slurm
+	DebugLevel=4
+	LogFile=/var/log/slurm/slurmdbd.log
+	PidFile=/var/run/slurmdbd.pid
+	StorageType=accounting_storage/mysql
+	StoragePass=$(cat /root/mysql_slurm_password.txt)
+	StorageUser=slurm
+	StorageLoc=slurm_acct_db
+
+# change the ownership to slurm
+chown slurm:slurm /etc/slurm/slurmdbd.conf
+
+# enable and start the slurm database (if you are root, you don't need the 'sudo')
+sudo systemctl enable slurmdbd
+sudo systemctl start slurmdbd
+
+# add the cluster and default group
+sudo sacctmgr -i add cluster BAMS
+sudo sacctmgr -i add account default_group Description="Default Group"
