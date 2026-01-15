@@ -105,3 +105,5 @@ for ijk in my_idx:
         plt.pause(2)
         # Close all plot windows automatically
         plt.close('all')
+        fsave = fileOut + '.png'
+        plt.savefig(fsave)
