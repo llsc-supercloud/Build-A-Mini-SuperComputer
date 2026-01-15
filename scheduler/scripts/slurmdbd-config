@@ -3,7 +3,7 @@ apt install mariadb-server
 
 #set the password for the root user, set the permissions
 cat /dev/urandom | tr -dc "[:alnum:]-_" | head -c25 > /root/mysql_slurm_password.txt
-chmod 0600 /root/mysql_slurm_password.tx
+chmod 0600 /root/mysql_slurm_password.txt
 
 # create the database
 echo "CREATE DATABASE slurm_acct_db CHARACTER SET utf8; GRANT ALL PRIVILEGES ON slurm_acct_db.* TO slurm@localhost IDENTIFIED BY '$(cat /root/mysql_slurm_password.txt)';" | mysql -u root
