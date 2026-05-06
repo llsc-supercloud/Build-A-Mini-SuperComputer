@@ -48,7 +48,7 @@ To save the configuration changes, restart ssh daemon (sshd).  At the command li
    systemctl restart sshd
 ```
 
-To install, become root and run `apt install vim`
+Do these same steps on the compute nodes through a direct connection to the nodes.
   
 
 

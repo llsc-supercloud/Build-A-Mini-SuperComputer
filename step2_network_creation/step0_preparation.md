@@ -20,4 +20,8 @@ Before we start configuring the network, we need to do the following:
 ```
    sudo su –
 ```
-
+7. Disable the cloud config from overwriting our files on a reboot.
+```
+   sudo su -
+   touch /etc/cloud/cloud-init.disabled
+```
