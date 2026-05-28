@@ -6,22 +6,33 @@ Supercomputers are impactful not because they are faster but because we can dist
 Before we start configuring the network, we need to do the following:
 
 1. Connect to headnode via monitor, keyboard and mouse and open a terminal window
+
 2. Connect the headnode to the switch
+
 3. Get the IP address of the headnode - you can do this by typing the the following at the command line
 ```   
     ifconfig
 ```
+
 4.  In the output that is printed to the screen look for wlan0, this section will print the IP address
+
 5.  From your laptop: ssh to headnode as admin, at the IP address listing under wlan0
 ```
      ssh admin@<wlan0-ipaddress>
 ```
+
 6.  become root using the command
 ```
    sudo su –
 ```
+
 7. Disable the cloud config from overwriting our files on a reboot.
 ```
    sudo su -
    touch /etc/cloud/cloud-init.disabled
 ```
+
+8. Enable password authentication
+   - As root, open the file /etc/ssh/sshd_config, change “PasswordAuthentication” to “yes” or uncomment the line.
+   - Restart sshd daemon - `systemctl restart sshd`
+

@@ -24,3 +24,15 @@ Do these steps as root.
   sudo iptables -A FORWARD -i eth0 -o wlan0 -j ACCEPT
   sudo iptables -A FORWARD -i wlan0 -o eth0 -m state --state ESTABLISHED,RELATED -j ACCEPT
 ```
+
+4. Make Iptables configuration persistent with iptables-persistent service.
+```
+   sudo apt install iptables-persistent
+   netfilter-persistent save
+```
+Iptables-persistent service will automatically load the iptables rules on boot up.
+
+5. Check the Iptables rules.
+```
+   sudo iptables -t nat -L -n -v
+```
