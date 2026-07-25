@@ -42,6 +42,17 @@ We need to edit /etc/ssh/sshd_config. Navigate to /etc/ssh and open the file wit
 ```
 Change “PasswordAuthentication” to “yes” and then save the file.
 You may need to uncomment (ie remove the '#' hashtag symbol) the line containing _PasswordAuthentication_
+Allow root to login by setting `PermitRootLogin` to `yes`
+
+``` text
+ PermitRootLogin yes
+ StrictModes yes
+ MaxAuthTries 6
+ MaxSessions 10
+
+ PasswordAuthentication yes
+```
+
 
 To save the configuration changes, restart ssh daemon (sshd).  At the command line type.
 ```

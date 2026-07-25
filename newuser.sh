@@ -8,7 +8,7 @@ set -euo pipefail
 # Configuration
 ############################
 NODES=("node1" "node2" "node3")
-HOME_BASE="/orcd/home"
+HOME_BASE="/home/gridsan"
 SSH_KEY_TYPE="ed25519"
 SHELL="/bin/bash"
 ############################
