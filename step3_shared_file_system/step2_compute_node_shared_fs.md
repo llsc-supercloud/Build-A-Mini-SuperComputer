@@ -19,6 +19,7 @@ Add these 2 lines to /etc/fstab.
 `10.0.0.1:/data/software /data/software  nfs  defaults  0  0`
 
 ```
+# After editing, check /etc/fstab
 root@node2:~# cat /etc/fstab
 proc            /proc           proc    defaults          0       0
 PARTUUID=ee43aca1-01  /boot/firmware  vfat    defaults          0       2
@@ -27,13 +28,13 @@ PARTUUID=ee43aca1-02  /               ext4    defaults,noatime  0       1
 10.0.0.1:/data/software /data/software  nfs  defaults  0  0
 ```
 
-4. Reload the daemon
+4. Reload the daemon with the changes.
 
 ```
   root$>  systemctl daemon-reload
 ```
 
-5. Mount
+5. Mount the NFS
 
 ```
   root$>  mount -a
