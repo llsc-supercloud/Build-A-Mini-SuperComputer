@@ -1,6 +1,6 @@
 #!/bin/bash
 # Date: 2026-01-08
-# Purpose: Add a user to the BAM cluster
+# Purpose: Add a user to the BAM cluster (as a system user) and to Slurm database (as a Slurm user).
 # Author: jmurray1@mit.edu, mullenj@mit.edu
 set -euo pipefail
 
@@ -11,7 +11,34 @@ NODES=("node1" "node2" "node3")
 HOME_BASE="/home/gridsan"
 SSH_KEY_TYPE="ed25519"
 SHELL="/bin/bash"
+CLUSTER_NAME="txpi4"
+SLURM_ACCT_NAME="default_group"
 ############################
+
+function create_slurm_account () {
+   # This function will create 'default_group' in the slurmdb if it does not exist.
+   account_name=$SLURM_ACCT_NAME
+
+   s1=$(sacctmgr --noheader show account where account=$account_name)
+
+   if [[ -z "$s1" ]]; then
+      echo "Create account $account_name in Slurm database."
+      sacctmgr add account $account_name Cluster=$CLUSTER_NAME Description="default group" Organization="MITLL"
+   fi
+
+}
+
+function add_slurmdb () {
+   # Create user on slurm db. Use 'sacctmgr create'
+   
+   local user_name=$1
+   acct_name=$SLURM_ACCT_NAME
+   #admin_level="admin"
+   #sacctmgr -i create user name=$user_name account=$acct_name adminlevel=$admin_level
+   sacctmgr -i create user name=$user_name account=$acct_name
+   echo "Add $user_name to Slurm database."
+}
+
 
 if [[ $EUID -ne 0 ]]; then
   echo "ERROR: This script must be run as root"
@@ -101,3 +128,8 @@ done
 echo
 echo "User '$USERNAME' successfully created on:"
 printf ' - %s\n' "${NODES[@]}"
+
+# Create 'default_group' in the slurm db
+create_slurm_account
+# Add the user to the slurm db
+add_slurmdb $USERNAME
