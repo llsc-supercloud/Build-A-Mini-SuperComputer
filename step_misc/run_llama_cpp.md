@@ -28,13 +28,13 @@ Convert Huggingface model to the GGUF format in floating point 16 precision.
 
 Quantize FP16 model to 4-bit integer.
 Quantize methods:  
-  - Q4_K_M
-  - Q4_0
+  - Q4_K_M - 4-bit but mixed precision in some layers
+  - Q4_0 -  all layers in 4-bit
 
 
 ```bash
   cd llama.cpp/build/bin
- ./llama-quantize $HOME/TinyLlama/TinyLlama-1.1B-Chat-v1.0.gguf $HOME/TinyLlama/tinyllama-1.1B-chat-v1.0-Q4_0.gguf Q4_K_M
+ ./llama-quantize $HOME/TinyLlama/TinyLlama-1.1B-Chat-v1.0.gguf $HOME/TinyLlama/tinyllama-1.1B-chat-v1.0-Q4_0.gguf Q4_0
 ```
 
 ## Run the rpc server and llama server
