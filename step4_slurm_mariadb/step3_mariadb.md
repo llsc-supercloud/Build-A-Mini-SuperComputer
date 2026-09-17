@@ -7,7 +7,7 @@
   - remove anonymous user
   - remove test table
 
-The following is interactive session to setup mariadb.
+The following is the interactive session to setup mariadb.
 
 ```
 root@headnode:/etc/slurm# mariadb-secure-installation
