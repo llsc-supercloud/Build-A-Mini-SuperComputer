@@ -74,12 +74,6 @@ PartitionName=pi4 Nodes=ALL Default=YES MaxTime=INFINITE State=UP
 
 ```
 
-## Compute Nodes
 
-1. Install slurmd and slurm-client
-
-` root@headnode$>  apt install slurmd slurm-client`
-
-2. Put a copy of slurm.conf in /etc/slurm
 
 

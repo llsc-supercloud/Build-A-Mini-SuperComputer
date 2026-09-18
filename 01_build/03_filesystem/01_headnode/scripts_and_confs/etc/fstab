@@ -1,0 +1,4 @@
+proc            /proc           proc    defaults          0       0
+PARTUUID=4c567ece-01  /boot/firmware  vfat    defaults          0       2
+PARTUUID=4c567ece-02  /               ext4    defaults,noatime  0       1
+UUID=9e9d157d-05ef-450d-8834-023c08086cf9  /home/gridsan  ext4  defaults  0  2
