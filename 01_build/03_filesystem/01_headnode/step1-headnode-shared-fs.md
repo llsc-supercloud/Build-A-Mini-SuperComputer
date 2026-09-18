@@ -100,8 +100,7 @@ Here we will make the drive accessible to the compute over the network. The head
       - Edit /etc/exports, or copy scripts_and_confs/etc/exports to /etc.
       - Run `exportfs -a`
 
-The /etc/exports configuration file allows  compute nodes (defined by IP subnet address 10.0.0.0) read-write access to the shared
- directory /data.
+The /etc/exports configuration file list the directories that made available over the network and allows the compute nodes (defined by IP subnet address 10.0.0.0/24 range) read-write access to the shared directory /data.
 
 
 ```bash
@@ -136,4 +135,4 @@ After editing /etc/exports, run the `exportfs -a` command to export the filesyst
     /data          10.0.0.0/24
 ```
 
-
+Here is a good explanation of the [NFS File Server](https://debian-handbook.info/browse/stable/sect.nfs-file-server.html).

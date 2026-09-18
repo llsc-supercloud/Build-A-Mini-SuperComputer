@@ -9,10 +9,11 @@
 
 2. Install the NFS client
 
-The NFS client will connect with the NFS server on the headnode.
+The NFS client will connect with the NFS server on the headnode. 
+Install the nfs-common package which contains the client.
 
 ```bash
-  root$> apt install -y nfs-common
+  root@node1$> apt install -y nfs-common
 
 ```
 3. Edit /etc/fstab to mount the network drive
@@ -31,16 +32,18 @@ PARTUUID=ee43aca1-02  /               ext4    defaults,noatime  0       1
 10.0.0.1:/data/software /data/software  nfs  defaults  0  0
 ```
 
-4. Reload the daemon with the changes.
+4. Reload the systemd daemon  to recognize the changes to /etc/fstab.
 
-```
-  root$>  systemctl daemon-reload
+```bash
+  root@node1$>  systemctl daemon-reload
 ```
 
 5. Mount the NFS
 
-```
-  root$>  mount -a
+Running `mount -a` command will mount the drive to the mount point.
+
+```bash
+  root@node1$>  mount -a
 ```
 
 The above steps should be repeated for all the compute nodes.
