@@ -10,7 +10,7 @@ Once inserted, you typically see it mounted in `/media/admin/Samsung USB`.
    umount /media/admin/Samsung\ USB
 ```
 
-3. Check for the block devices on the system
+3. Check for the block devices on the system with the `lsblk` command.
 
 ```
    root@headnode$> lsblk

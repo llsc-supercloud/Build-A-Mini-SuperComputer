@@ -10,10 +10,10 @@ Once inserted, you typically see it mounted in `/media/admin/Samsung USB`.
    umount /media/admin/Samsung\ USB
 ```
 
-3. Check for the block devices on the system
+3. Check for the block devices on the system with `lsblk` command.
 
-```
-   root$> lsblk
+```bash
+   root@headnode$> lsblk
    NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
    loop0    7:0    0    2G  0 loop
    sda      8:0    1 59.8G  0 disk
