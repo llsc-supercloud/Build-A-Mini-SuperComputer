@@ -2,10 +2,10 @@
 Once you have written the OS onto the USB drive, you want to install it into the node.  
 
 1. Insert the USB Drive into the Pi
-2. Connect the Pi to power
-3. Connect the Pi to the Monitor using the micro-HDMI to HDMI cable
-4. Connect a keyboard
-5. Connect a mouse
+2. Connect the Pi to the Monitor using the micro-HDMI to HDMI cable
+3. Connect a keyboard
+4. Connect a mouse
+5. Connect the Pi to power
 
 When the monitor comes up, you should see the Raspbian Desktop.  
 

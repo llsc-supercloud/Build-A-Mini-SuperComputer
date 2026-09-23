@@ -14,7 +14,7 @@ time.  We will use NTP To synchronize them.
 ` timedatectl status`
 
 - It may be necessary to restart the timesync service.  This is also the 
-command that you will use to restart the NTP server is there is a problem with 
+command that you will use to restart the NTP server if there is a problem with 
 your time synchronization
 ```
   sudo systemctl restart systemd-timesyncd
