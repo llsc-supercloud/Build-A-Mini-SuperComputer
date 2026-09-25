@@ -1,0 +1,58 @@
+# Cluster admin
+MANDM_ID : 60103 
+mandm_name : 'cyee'    # Admin user
+spot_job_enabled : True
+cluster_help_email : ' SuperCloud <supercloud@mit.edu>'
+
+# LLSC python module
+llsc_python_module : 'conda/Python-ML-2025b-pytorch'    
+grid_idm_file: '/home/gridsan/groups/gridteam/user_affiliation/sc_idm.users.moriadata.tsv'
+
+interactive_slurm_options : # options for setting up Interactive session
+    --job-name : interactive
+    --qos : high
+    --time : '00:30:00'
+    
+default_partition : pi4   # default partition for this cluster
+
+# interactive : cpu_types - CPU types that can be used for interactive only. This key will determine how job_mode is set in ll_sub
+#  Given cpu_type only, this will return the partition name
+# interactive  : gpu_names - GPU name associated with a partition
+job_mode :
+   interactive :
+      default : pi4
+      cpu_types : 
+        bcm2711 : pi4
+      gpu_names : Null
+      
+   batch :
+      default : pi4
+      cpu_types : 
+        bcm2711 : pi4
+      gpu_names : Null
+
+
+partitions :
+  -  partitionName : pi4
+     enabled: True
+     clusterName : txpi4
+     vendorName : Broadcom
+     cpuType : bcm2711
+     cpuVersion : 2711
+     nCores : 4
+     hwm_num_nodes: 3
+     maxSlots : 1
+     defaultSlots : 1
+     maxCores : 4
+     maxThreads : 4
+     mainMemory : 8
+     hasGpu: False
+     gpuName : Null
+     gpuUnits : Null
+     slotsAvail : 0
+     isSpotQueue: False
+     spot_q_name : Null
+     isManyCore : False
+     constraint_enabled : False  # constraint feature is enabled (true) in nodes prior to the xeon-p8. Xeon-p8 and future hardware will have constraint disabled 
+     exclusive: True
+  
