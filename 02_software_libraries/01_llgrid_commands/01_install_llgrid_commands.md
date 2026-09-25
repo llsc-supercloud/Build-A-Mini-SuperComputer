@@ -9,6 +9,8 @@ The LLGrid commands are packaged in the a deb file. Each cluster needs it own cu
 
 1. As root, on each node run the dpkg command to install
 
+At the minimum, the LLGrid commands should be installed on the headnode.
+
 ```bash
   root@headnode$>  dpkg -x llgrid-commands_20260225-3ubuntu1_all.deb /
 ```
