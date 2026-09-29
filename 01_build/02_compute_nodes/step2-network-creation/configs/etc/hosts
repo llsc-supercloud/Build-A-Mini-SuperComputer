@@ -8,12 +8,9 @@
 #
 127.0.0.1 localhost
 
-127.0.1.1 headnode headnode
+127.0.1.1 node1
 10.0.0.1 headnode
-10.0.0.51 node1
-10.0.0.52 node2
-10.0.0.53 node3
-10.0.0.54 node4
+
 # The following lines are desirable for IPv6 capable hosts
 ::1 localhost ip6-localhost ip6-loopback
 ff02::1 ip6-allnodes
