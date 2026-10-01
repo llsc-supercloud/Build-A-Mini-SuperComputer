@@ -51,11 +51,14 @@ This command will format the disk in ext4 format.
 ```
 
 6. Mount the drive to the mount point.
-The mount point is /data. This /data has to created.
+
+The mount point is /data. The /data directory has to be created. Also a symlink pointing at /data has to be created .
 
 ```
    # Create the mount point
    root$> mkdir /data
+   # Create symlink /home/gridsan to point at /data
+   root$> ln -s /data /home/gridsan
    # Mount /dev/sdb1 to /data
    root$> mount /dev/sdb1 /data
 ```
@@ -72,7 +75,7 @@ The mount point is /data. This /data has to created.
     /dev/loop0: LABEL="origin:rpi-swap" TYPE="swap"
     /dev/zram0: LABEL="zram0" UUID="bd587daa-98aa-4880-b429-0bf240f0c5a5" TYPE="swap"
 ```
-  The UUID of sdb1 is `UUID="9e9d157d-05ef-450d-8834-023c08086cf9"`
+  The UUID of sdb1 is `UUID="9e9d157d-05ef-450d-8834-023c08086cf9"`.
 
   - Add the UUID, mount point, format, mount options, backup operation, and file system check order to /etc/fstab.  For a nice explanation of fstab go [here](https://www.redhat.com/en/blog/etc-fstab).
 

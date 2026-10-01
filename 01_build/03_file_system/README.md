@@ -6,3 +6,23 @@ We will build a similar shared filesystem for our mini-supercomputer.  The files
 the 256GB usb drive and is mounted on all the nodes.
 
 This directory holds the instructions and scripts for building the shared filesystem.
+
+## How to build the shared filesystem
+### Summary
+- Headnode
+  1. Check for the new disk (lsblk)
+  2. Partition the disk (fdisk)
+  3. Format the disk (mkfs.ext4)
+  4. Mount the disk  (mount)
+    - mount
+    - edit /etc/fstab 
+  5. NFS mount and export filesystem to compute nodes
+    - Install nfs-kernel-server - NFS server
+    - Edit /etc/exports
+    - Export filesystem (exportfs -a)
+
+- Compute Node
+  1. Install nfs-common - NFS client
+  2. Edit /etc/fstab
+  3. Reload system daemon (systemctl daemon-reload)
+  4. Mount  (mount -a)
