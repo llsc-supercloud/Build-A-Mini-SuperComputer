@@ -52,7 +52,7 @@ This command will format the disk in ext4 format.
 
 6. Mount the drive to the mount point.
 
-The mount point is /data. The /data directory has to be created. Also a symlink pointing at /data has to be created .
+The mount point is /data. The /data directory has to be created. Also a symlink (/home/gridsan) pointing at /data has to be created .
 
 ```
    # Create the mount point
