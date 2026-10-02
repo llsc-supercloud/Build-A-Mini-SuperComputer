@@ -45,5 +45,26 @@ Running `mount -a` command will mount the drive to the mount point.
 ```bash
   root@node1$>  mount -a
 ```
+6.  Check that the drive is mounted.
+
+Run the `df` command.
+
+```bash
+root@node1:~ $ df
+Filesystem              1K-blocks     Used Available Use% Mounted on
+udev                      3728924        0   3728924   0% /dev
+tmpfs                     1601288     9320   1591968   1% /run
+/dev/sda2                61078840  7150480  51372592  13% /
+tmpfs                     4003220      212   4003008   1% /dev/shm
+tmpfs                        5120       16      5104   1% /run/lock
+tmpfs                        1024        0      1024   0% /run/credentials/systemd-journald.service
+tmpfs                     4003220        4   4003216   1% /tmp
+/dev/sda1                  516204    88908    427296  18% /boot/firmware
+10.0.0.1:/data          245580800 39260160 193773568  17% /data
+10.0.0.1:/data/software 245580800 39260160 193773568  17% /data/software
+tmpfs                      800644       64    800580   1% /run/user/1000
+tmpfs                        1024        0      1024   0% /run/credentials/getty@tty1.service
+tmpfs                        1024        0      1024   0% /run/credentials/serial-getty@ttyS0.service
+```
 
 The above steps should be repeated for all the compute nodes.
