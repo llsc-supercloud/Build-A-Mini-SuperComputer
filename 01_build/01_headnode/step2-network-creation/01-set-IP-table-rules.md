@@ -26,6 +26,6 @@ As root, we will create a new file named '99-ipforward.conf' in /etc/systemctl.d
     ```
 
 -   Add the line: 'net.ipv4.ip_forward = 1'
-    ![image of ip_forward file](../../images/
+    ![image of ip_forward file](../../../images/ipforward-file.png)
 
 
