@@ -24,6 +24,6 @@ If you are successful, you should see the following message:
 
 If you are sucessful, you should get access to the compute node and see the following message:
 here captured for node3.
-![testing root password](../../images/test-root-password.png)
+![testing root password](../../../images/test-root-password.png)
 
 

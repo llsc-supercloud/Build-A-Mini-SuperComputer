@@ -1,7 +1,7 @@
 
 # Shared File System
 
-Supercomputers have a shared filesystem that is visible to all of the nodes, headnode and compute node.  
+Supercomputers have a shared filesystem that is visible to all of the nodes, i.e., headnode and compute nodes.  
 We will build a similar shared filesystem for our mini-supercomputer.  The filesystem is built on 
 the 256GB usb drive and is mounted on all the nodes.
 

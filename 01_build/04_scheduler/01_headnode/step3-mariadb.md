@@ -2,7 +2,24 @@
 
 ## Install mariadb
 
-## Run mariadb-secure-installation
+Install Mariadb on the headnode
+
+```
+   root$> apt install mariadb-server -y
+   root$> apt install mariadb-client -y
+```
+
+## Start the Maria service
+Mariadb runs as a service on the headnode using default port 3306.
+We need to enable and start mariadb 
+
+```
+   root$> systemctl enable mariadb
+   root$> systemctl start mariadb
+```
+
+## Configure Mariadb to run in a secure mode
+Run mariadb-secure-installation
   - to setup root
   - remove anonymous user
   - remove test table

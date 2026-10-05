@@ -1,9 +1,21 @@
 # Setup Slurm database daemon
 
-The mariadb will have to be setup first. 
-Copy slurmdbd.conf to /etc/slurm on the headnode.  
+## Configuring Slurmdbd
 
-Here is slurmdbd.conf. The slurmdbd.conf should be owned by slurm and readable only by slurm.
+The mariadb will have to be setup first. 
+
+-   Copy slurmdbd.conf to /etc/slurm on the headnode.  
+-   The slurmdbd.conf should be owned by slurm and readable only by slurm.
+    To accomplish this, execute the following two lines:
+    -   the first changes the owner to slurm
+    -   the second sets the permissions
+```
+   root$> chown slurm:slurm /etc/slurm/slurmdbd.conf
+   root$> chmod 600 /etc/slurm/slurmdbd.conf
+```
+
+## Slurmdbd configuration 
+Here is slurmdbd.conf. 
 
 ```
 ### Slurmdbd.conf

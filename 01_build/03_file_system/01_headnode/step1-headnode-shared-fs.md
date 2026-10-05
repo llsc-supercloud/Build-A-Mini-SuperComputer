@@ -2,7 +2,8 @@
 
 1. Insert the 256G USB drive into the fast USB (blue).
 
-Once inserted, you typically see it mounted in `/media/admin/Samsung USB`.
+Once inserted, you typically see it mounted in /media/admin with the name of the 
+manufacturer.  In the examples for our kit, it was `/media/admin/Samsung USB`.
 
 2. Unmount the 256G USB drive
 
@@ -81,6 +82,8 @@ The mount point is /data. The /data directory has to be created. Also a symlink 
 
     Add  `UUID=9e9d157d-05ef-450d-8834-023c08086cf9  /data  ext4  defaults  0  2`
 
+Confirm that the /etc/fstab has been updated correctly, using the `cat` command which will write the file out to the screen.
+
 ```bash
   root@headnode$> cat /etc/fstab
   proc            /proc           proc    defaults          0       0
@@ -100,7 +103,7 @@ Here we will make the drive accessible to the compute over the network. The head
 ```
   - Export the filesystem to the compute nodes.
 
-      - Edit /etc/exports, or copy scripts_and_confs/etc/exports to /etc.
+      - Edit /etc/exports, or copy confs/etc/exports to /etc.
       - Run `exportfs -a`
 
 The /etc/exports configuration file list the directories that made available over the network and allows the compute nodes (defined by IP subnet address 10.0.0.0/24 range) read-write access to the shared directory /data.

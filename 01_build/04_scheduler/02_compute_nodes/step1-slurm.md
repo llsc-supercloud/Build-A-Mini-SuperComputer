@@ -11,10 +11,14 @@ The slurm-client package contains the slurm commands such as sbatch, sinfo, scon
 1. Install slurmd and slurm-client on each compute node.
 
 ```bash
+   root@node1$>  apt install slurmd -y
    root@node1$>  apt install slurmd slurm-client -y
 ```
 
-2. For consistency, all nodes should have the same slurm.conf. You can copy `/etc/slurm/slurm.conf` from the headnode to `/etc/slurm/` of each compute node. The slurm.conf can also be found in the `scripts_and_conf/etc/slurm` directory.
+2. For consistency, all nodes should have the same slurm.conf. You can either 
+-  copy /etc/slurm/slurm.conf` from the headnode to `/etc/slurm/` of each compute node. 
+or 
+-  copy the slurm.conf from the `confs/etc/slurm` directory.
 
 3. Enable and start slurmd as a service on each compute node.
 
