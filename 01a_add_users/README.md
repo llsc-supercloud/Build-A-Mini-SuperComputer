@@ -38,7 +38,7 @@ We will do this via a script.
 ## Confirm the new account
 
 -   From a laptop, use the IP address of the headnode and login to the headnode using the new user credentials
--   The accont will exist, but the home directory will be empty
+-   The account will exist, but the home directory will be empty
 -   Test to see that the user is in the Slurm database by executing the command `sacct`. This should return something that
     looks like:
 ![output from sacct with no jobs](../images/sacct-no-jobs.png)
