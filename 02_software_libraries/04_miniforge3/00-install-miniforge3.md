@@ -8,12 +8,12 @@ Do the installation as the admin user from the headnode.
 
 ```bash
 # Download the Miniforge3 installer
-curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
+admin@headnode$>  curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh"
 
 # Make the script executable
-chmod 755 Miniforge3-Linux-aarch64.sh
+admin@headnode$> chmod 755 Miniforge3-Linux-aarch64.sh
 
 # Install miniforge3 in /home/gridsan/software/miniforge3.
 # Follow the prompts
-./Miniforge3-Linux-aarch64.sh -p /home/gridsan/software/miniforge3
+admin@headnode$> ./Miniforge3-Linux-aarch64.sh -p /home/gridsan/software/miniforge3
 ```
