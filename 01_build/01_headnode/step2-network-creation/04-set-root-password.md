@@ -13,7 +13,7 @@ Now, to simplify the remaining system configuration, we are going to set the roo
 
 If you are successful, you should see the following message:
 (The image was captured for node3 and you should see a similar image.)
-![root password success](../../images/root-password.png
+![root password success](../../../images/root-password.png
 
 ### Test the root password on the node 
 
@@ -26,6 +26,6 @@ If you are successful, you should see the following message:
 
 If you are sucessful, you should have access to the system and see the following message:
 (The image was captured for node3 and you should see a similar image.)
-![testing root password](../../images/test-root-password.png)
+![testing root password](../../../images/test-root-password.png)
 
 

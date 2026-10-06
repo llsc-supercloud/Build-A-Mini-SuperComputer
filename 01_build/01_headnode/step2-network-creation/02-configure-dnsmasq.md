@@ -35,7 +35,7 @@ Dnsmasq does the job of DNS and DHCP.
 ### Confirm the modifications to /etc/hosts
 At the command line, type `cat hosts`
 The output should look like:
-![output from cat etc/hosts](../../etc-hosts.png)
+![output from cat etc/hosts](../../../images/etc-hosts.png)
 
 ### Configure dnsmasq on the headnode
 The system will be using DHCP.  To enable DHCP, we need to set some 

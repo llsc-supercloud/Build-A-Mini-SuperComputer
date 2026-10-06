@@ -20,7 +20,7 @@ script that is included in network-scripts.
 ```
 
 If this is successful, you should see output similar to what is in the image below.
-![confirmation of nmcli](../../images/nmcli-tho0-confirm.png)
+![confirmation of nmcli](../../../images/nmcli-tho0-confirm.png)
 
 ### Test the Network Configuration
 
@@ -40,6 +40,6 @@ Second, confirm that the address 10.0.0.1 is being used for eth0.
     ifconfig
 ```
 Scroll up to eth0, and check to see that you see `inet 10.0.0.1` as in the image below.
-![confirming eth0](../../images/nmcli-test-confirm)
+![confirming eth0](../../../images/nmcli-test-confirm)
 
 Now that the network is configured, it is time to configure the compute nodes.

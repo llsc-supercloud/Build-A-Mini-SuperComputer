@@ -21,4 +21,4 @@ Configure the /etc/hosts file on the compute nodes so they are aware of the head
 ```
 
 You should see output that looks like:
-![output from pin](../../images/ping-headnode.png)
+![output from ping](../../../images/ping-headnode.png)
