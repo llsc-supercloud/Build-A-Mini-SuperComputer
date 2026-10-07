@@ -1,12 +1,6 @@
 # Cluster admin
-MANDM_ID : 60103 
-mandm_name : 'cyee'    # Admin user
-spot_job_enabled : True
 cluster_help_email : ' SuperCloud <supercloud@mit.edu>'
 
-# LLSC python module
-llsc_python_module : 'conda/Python-ML-2025b-pytorch'    
-grid_idm_file: '/home/gridsan/groups/gridteam/user_affiliation/sc_idm.users.moriadata.tsv'
 
 interactive_slurm_options : # options for setting up Interactive session
     --job-name : interactive
