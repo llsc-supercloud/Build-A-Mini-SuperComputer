@@ -1,8 +1,17 @@
-# PySCF - Python module for quantum chemistry
+# Install Python packages
 
-## Install PySCF into the base environment of the miniforge3 installation directory
+Python packages can be installed using *mamba* ( which is better and faster than conda) or *pip*. 
+For starters, we will use pip to install the following packages into the base environment of our Miniforge3 installation.
 
-Set the PATH variable to the location _bin_ directory of the python interpreter.  
+ - PySCF - Python module for quantum chemistry
+ - Matplotlib - plotting library
+ - Mpi4py  - python wrapping for MPI
+ - OpenMPI - MPI implementation
+ - Psutil - system and process utilities
+
+## Installing the packages with pip into the base environment of the miniforge3 installation directory
+
+Set the PATH variable to the location of the python interpreter and pip executables. By setting the PATH, python and pip will know where the base environment is.   
 Also set PATH and LD_LIBRARY_PATH variables to the OpenMPI executables and libraries respectively.  
 Use pip to install the packages into the base environment.
 
@@ -14,6 +23,7 @@ admin@headnode$> export LD_LIBRARY_PATH=/home/gridsan/software/openmpi-5.0.10/lb
 admin@headnode$> pip install mpi4py openmpi
 admin@headnode$> pip install psutil
 admin@headnode$> pip install pyscf 
+admin@headnode$> pip install matplotlib
 
 ```
 

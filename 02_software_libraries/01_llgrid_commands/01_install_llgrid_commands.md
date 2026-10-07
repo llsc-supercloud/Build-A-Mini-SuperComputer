@@ -7,7 +7,7 @@ The LLGrid commands are packaged in the a deb file. Each cluster needs it own cu
  - txpi4.yml - contains partition and hardware related information and default settings for the commands 
  - llgrid.id - cluster name identifier
 
-1. As root, install the python3-tabulate package for the system python on the headnode and compute nodes.
+1. As root, install the python3-tabulate package for the system python on the headnode and compute nodes. The tabulate package offers pretty table formats.
 
 ```bash
   root@headnode$>  apt install python3-tabulate -y
