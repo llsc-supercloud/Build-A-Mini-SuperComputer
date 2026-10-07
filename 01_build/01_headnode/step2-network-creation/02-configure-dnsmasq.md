@@ -72,7 +72,7 @@ dhcp-host=node3,10.0.0.53
 dhcp-host=node4,10.0.0.54
 ```
 
-The cleanest was to do this is to replace the default RaspberryPi file /etc/dsnmaasq.conf 
+The cleanest way to do this is to replace the default RaspberryPi file /etc/dsnmaasq.conf 
 with the `dnsmasq.conf` file in the network-scripts.  
 ```
   # Become root
@@ -81,4 +81,11 @@ with the `dnsmasq.conf` file in the network-scripts.
   cp /location-downloaded-scripts/dnsmasq.conf /etc/dnsmasq.conf
 ```
 
+### Start the dnsmasq server
+
+```bash
+   root@headnode$>  systemctl enable dnsmasq
+   root@headnode$>  systemctl start dnsmasq
+
+```
 
