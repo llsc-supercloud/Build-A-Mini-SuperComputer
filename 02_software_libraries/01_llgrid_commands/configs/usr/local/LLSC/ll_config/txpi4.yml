@@ -1,6 +1,4 @@
 # Cluster admin
-cluster_help_email : ' SuperCloud <supercloud@mit.edu>'
-
 
 interactive_slurm_options : # options for setting up Interactive session
     --job-name : interactive
