@@ -8,7 +8,7 @@
 ## You may have to make edits to certain variables.
 
 export LLAMACPP_PATH=/home/gridsan/software/llama.cpp
-LLAMABIN=$LLAMACPP_PATH/build/bin
+export LLAMABIN=$LLAMACPP_PATH/build/bin
 export PATH=$LLAMABIN:$PATH
 
 source /etc/profile
@@ -22,26 +22,29 @@ let "worker_num=(${SLURM_NNODES} - 1)"
 PORT_NUM=50052
 
 NODELISTS=$SLURM_JOB_NODELIST
-echo $NODELISTS
-
+echo "SLURM NODELIST =  $NODELISTS"
+echo ""
 #NODENAMES=$(scontrol show hostnames | tr '\n' ',')
-echo $NODENAMES
 NODENAMES=$( scontrol show hostnames | tr '\n' ',' )
 echo $NODENAMES
+
+#  Start the RPC servers on the other compute nodes, not MASTER_HOST
+srun --nodes=${worker_num} --ntasks=${worker_num} --exclude=$MASTER_HOST ${LLAMABIN}/rpc-server -c -p $PORT_NUM -H 0.0.0.0 -t 1 &
+#Sleep to wait for RPC servers to start up.
+sleep 120
+
+RPC_NODELIST=""
+# Create a comma-separated list host1:port,host2:port,etc that are running the RPC server
 IFS="," read -r -a nodearray <<< "$NODENAMES"
-NODELIST=""
-# Create a list host:port that are running the RPC server
 for i in "${nodearray[@]}"; do
    if [ "$i" != "$MASTER_HOST" ]; then
-      NODELIST+=$i":$PORT_NUM,"
+      RPC_NODELIST+=$i":$PORT_NUM,"
    fi
 done
 
-echo $NODELIST
-#  Start the RPC servers on the node2-N
-srun --nodes=${worker_num} --ntasks=${worker_num} --exclude=$MASTER_HOST ${LLAMABIN}/rpc-server -c -p $PORT_NUM -H 0.0.0.0 -t 1 &
+echo "RPC host:port list - ${NODELIST}"
 
-# Run llama-server on node1
+# Run llama-server on MASTER_HOST
 MODELPATH="$HOME/tinyllama/tinyllama-1.1B-chat-v1.0_Q4_K_M.gguf"
 srun --nodelist=$MASTER_HOST --ntasks=1 ${LLAMABIN}/llama-server -m $MODELPATH \
   --host 0.0.0.0 --port $MASTER_PORT \
@@ -50,4 +53,4 @@ srun --nodelist=$MASTER_HOST --ntasks=1 ${LLAMABIN}/llama-server -m $MODELPATH \
   --cache-type-v q8_0 \
   --spec-draft-type-k q8_0 \
   --spec-draft-type-v q8_0 \
-  --ctx-size 2048  --rpc $NODELIST 
+  --ctx-size 2048  --rpc $RPC_NODELIST 
