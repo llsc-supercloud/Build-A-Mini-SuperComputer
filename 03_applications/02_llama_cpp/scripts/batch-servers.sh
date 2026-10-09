@@ -35,10 +35,15 @@ sleep 120
 
 RPC_NODELIST=""
 # Create a comma-separated list host1:port,host2:port,etc that are running the RPC server
+firsttime=1
 IFS="," read -r -a nodearray <<< "$NODENAMES"
 for i in "${nodearray[@]}"; do
    if [ "$i" != "$MASTER_HOST" ]; then
-      RPC_NODELIST+=$i":$PORT_NUM,"
+      if [ -z "$RPC_NODELIST" ] ; then
+         RPC_NODELIST+=$i":$PORT_NUM"
+      else
+         RPC_NODELIST+=","$i":$PORT_NUM"
+      fi
    fi
 done
 
