@@ -1,0 +1,12 @@
+==========================================================================
+KPOINTS  |  CONVERGED  |  KE_CUTOFF  |  TOTAL ENERGY (Ev)  |  WALLTIME(s)
+==========================================================================
+overwrite output file: /home/gridsan/landerson/pyscf_proj/thread_benchmark/log/dft_thread_1.log
+ 1 True: 200 -304.840617 eV 1288.057953 s
+output file: /home/gridsan/landerson/pyscf_proj/thread_benchmark/log/dft_thread_2.log
+ 1 True: 200 -304.840617 eV 662.935896 s
+output file: /home/gridsan/landerson/pyscf_proj/thread_benchmark/log/dft_thread_4.log
+ 1 True: 200 -304.840617 eV 355.017024 s
+=====================
+ Benchmark Complete.
+=====================

@@ -1,0 +1,17 @@
+================================================
+KE_CUTOFF  |  WALLTIME(s)  |  TOTAL ENERGY (Ev)
+================================================
+WARN: mesh [ 23  23 173] is not enough for AFTDF.get_nuc function to get integral accuracy 1e-08.
+Recommended mesh is [ 35  35 273].
+48
+output file: /home/gridsan/landerson/pyscf_proj/ke_cutoff_benchmark/log/dft_ke_cutoff_100.log
+ 1 True: 100 -304.842661 eV 66.080158 s
+48
+output file: /home/gridsan/landerson/pyscf_proj/ke_cutoff_benchmark/log/dft_ke_cutoff_200.log
+ 1 True: 200 -304.840617 eV 132.380148 s
+48
+output file: /home/gridsan/landerson/pyscf_proj/ke_cutoff_benchmark/log/dft_ke_cutoff_400.log
+ 1 True: 400 -304.840656 eV 345.147581 s
+=========================================
+ Benchmark Complete. Summary of results:
+=========================================

@@ -1,0 +1,267 @@
+#INFO: **** input file is /home/gridsan/landerson/pyscf_proj/serial/dft_serial.py ****
+'''
+This module is demonstrate an SCF calculation of a 
+crystal for a FIXED set of k-point meshes using density functional theory.
+The results are printed to the console and saved to a text file.
+'''
+
+import numpy as np
+import os
+from pyscf.pbc import dft, gto, df
+from pyscf import lib
+import time
+import sys
+from pathlib import Path
+
+
+
+'''
+--------------------------------
+Set Calculation Parameters
+-------------------------------
+Get the kinetic energy cutoff, kpoints, and number of threads
+from the command line arguments
+The commented code lines are there for testing during an 
+interactive session.
+'''
+
+# Get the kinetic energy cutoff from the command line argument
+try:
+    # ke_cutoff = 200
+    ke_cutoff = int(sys.argv[1])
+except ValueError:
+    print("Invalid kinetic energy cutoff. Please provide a valid integer.")
+    sys.exit(1)
+
+
+ # Get the number of cores allocated for the job from the SLURM environment variable. If not set, default to 1 core.
+try:
+    num_cores = int(os.environ.get('OMP_NUM_THREADS', 1)) 
+    # print(lib.num_threads()) 
+except ValueError:
+    print("Invalid number of cores. Please provide a valid integer.")
+    sys.exit(1)
+
+# Name of output file where the results will be saved.
+try:
+    path = Path.cwd() / "log"
+except ValueError:
+    print("Invalid file path. Please check the file path.")
+    sys.exit(1)
+
+calc = path / f'dft_serial_{ke_cutoff}'
+
+# Convergence tolerance (Hartree) used to flag when successive energies
+# have stopped changing meaningfully -- mirrors the "energy convergence
+# threshold" concept from the QE exercise.
+convergence_total_hartree = 1e-4
+
+'''
+--------------------------
+Build a Crystal Unit Cell
+--------------------------
+Define the crystal structure of the material being studied. 
+The unit cell is used to specify the atomic positions, basis functions, 
+pseudopotentials, and lattice vectors for the crystal. 
+Verbose output is printed to the log file specified in the output parameter.
+
+'''
+# Build the unit cell
+cell = gto.Cell(
+
+    # Add the atoms to the unit cell at specific Cartesian coordinates
+    atom =  '''
+        C 0.0 0.0 0.0
+        C 0.0 1.42 0.0
+    ''',
+
+    # Specify Gaussian-type orbital as the basis function for periodic calculations
+    basis = 'gth-dzvp',
+
+    # Specify pseudopotentials that describes the exchange-correlation interactions between electrons
+    pseudo = 'gth-lda',
+
+    # Lattice vectors defines the positions of the atoms inside the unit cell 
+    a =  [[2.46, 0.0, 0.0],
+        [-1.23, 2.13, 0.0],
+        [0.0, 0.0, 20.0]
+    ],
+
+    # Name of the output file where the verbose calculations will be saved
+    output = f'{calc}.log',
+
+    verbose = 4
+)
+
+
+'''
+---------------------------------
+Set Calculation Parameters
+--------------------------------
+These are the "knobs" that will be adjusted in other scripts to control the accuracy 
+and performance of the calculation:
+
+1. cell.ke_cutoff = KE_CUTOFF from KE_CUTOFF_LIST
+2. kpt = KPT from KPOINT_LIST
+3. num_cores = OMP_NUM_THREADS 
+'''
+# Set the maximum memory for the calculation based on the amount of available RAM that can be used during the calculation
+# Calculation will fail if it requires more memory than this
+# Note: this total memory limit is for MIT SuperCloud
+# Sets a 3GB limit per process for Rasberry Pi
+cell.max_memory = 300 # in MB
+
+# Kinetic energy cutoff for the plane-wave basis set which determines accuracy of the calculation
+# Note: If you get a warning about the mesh being too small, you can increase the kinetic energy cutoff to improve the accuracy of the calculation.
+cell.ke_cutoff = int(ke_cutoff)
+
+# Number of dimensions of the crystal. 
+# In this case, we are performing a 2D calculation for a graphene sheet.
+cell.dimension = 2
+
+# This is when the unit cell is built and the basis functions are generated for the calculation.
+cell.build()
+
+
+# List of k-point meshes to test. T
+kpt = 1
+kmesh = cell.make_kpts([1,kpt,kpt])
+
+
+'''
+--------------------------------
+Perform the DFT Calculation
+-------------------------------
+This will perform the DFT calculation that will determine the total energy of the crystal for a specific k-point mesh. 
+The calculation is performed using the Kohn-Sham method with a specific exchange-correlation functional (PBE in this case). 
+The density fitting method is used to speed up the calculation by approximating the electron density using a set of auxiliary basis functions. 
+The AFTDF method is used for this purpose, which is a specific implementation of density fitting for periodic systems. 
+The SCF calculation is executed and the CPU time taken for the calculation is recorded. 
+'''
+# Perform the DFT calculation using the Kohn-Sham method with a specific exchange-correlation functional (PBE in this case).
+mf = dft.KRKS(cell,kmesh)
+mf.xc = 'pbe'
+
+# The density fitting method is used to speed up the calculation by approximating the electron density using a set of auxiliary basis functions. 
+#The AFTDF method is used for this purpose, which is a specific implementation of density fitting for periodic systems.
+mf.with_df = df.AFTDF(cell, kmesh)
+mf.with_df.coul_poly_cutoff = 2
+
+# Execute the SCF calculation (mf.kernel()) and record the CPU time taken for the calculation.
+start_time = time.time()
+e_tot = mf.kernel()
+end_time = time.time()
+
+
+'''
+-------------------------
+Collect and Print Results
+-------------------------
+The wall time taken for the calculation is calculated by subtracting the start time from the end time
+The convergence status of the SCF calculation is checked to determine if the calculation converged successfully.
+The total energy is converted from Hartree to electron volts (eV) for easier interpretation.
+The results of the calculation, including the k-point mesh, number of k-points, wall time, total energy, and convergence status, are printed to the console in a formatted table.
+'''
+# Save the wall time taken for the calculation.
+wall_time = end_time - start_time
+
+# Boolean value that prints whether the scf converged.
+converged = mf.converged
+
+# Total energy converted from Hartree to electron volts (eV) for easier interpretation.
+e_tot = e_tot * 27.2114 
+
+print(f"k-point mesh: {kpt} {kpt} {kpt}")
+print(f"Kinetic energy (eV): {cell.ke_cutoff} {e_tot:.6f}")
+print(f"wall time (s): {wall_time:.6f} s" )
+#INFO: ******************** input file end ********************
+
+
+System: uname_result(system='Linux', node='d-19-13-1', release='6.1.186-llgrid', version='#20260828 SMP PREEMPT_DYNAMIC Fri Aug 28 11:13:28 EDT 2026', machine='x86_64')  Threads 48
+Python 3.12.12 | packaged by conda-forge | (main, Jan 26 2026, 23:51:32) [GCC 14.3.0]
+numpy 2.2.6  scipy 1.17.1  h5py 3.15.1
+Date: Fri Oct  9 23:31:16 2026
+PySCF version 2.14.0
+PySCF path  /home/gridsan/landerson/.local/lib/python3.12/site-packages/pyscf
+
+[CONFIG] conf_file None
+[INPUT] verbose = 4
+[INPUT] num. atoms = 2
+[INPUT] num. electrons = 8
+[INPUT] charge = 0
+[INPUT] spin (= nelec alpha-beta = 2S) = 0
+[INPUT] symmetry False subgroup None
+[INPUT] Mole.unit = angstrom
+[INPUT] Symbol           X                Y                Z      unit          X                Y                Z       unit  Magmom
+[INPUT]  1 C      0.000000000000   0.000000000000   0.000000000000 AA    0.000000000000   0.000000000000   0.000000000000 Bohr   0.0
+[INPUT]  2 C      0.000000000000   1.420000000000   0.000000000000 AA    0.000000000000   2.683411096882   0.000000000000 Bohr   0.0
+
+nuclear repulsion = -19.8117516476267
+number of shells = 6
+number of NR pGTOs = 42
+number of NR cGTOs = 26
+basis = gth-dzvp
+ecp = {}
+CPU time:        11.50
+lattice vectors  a1 [4.648726266, 0.000000000, 0.000000000]
+                 a2 [-2.324363133, 4.025116645, 0.000000000]
+                 a3 [0.000000000, 0.000000000, 37.794522491]
+dimension = 2
+low_dim_ft_type = None
+Cell volume = 707.198
+rcut = 22.07448407082675 (nimgs = [6 6 0])
+precision = 1e-08
+pseudo = gth-lda
+ke_cutoff = 200
+    = [ 31  31 243] mesh (233523 PWs)
+
+
+******** <class 'pyscf.pbc.dft.krks.KRKS'> ********
+method = KRKS
+initial guess = minao
+damping factor = 0
+level_shift factor = 0
+DIIS = <class 'pyscf.scf.diis.CDIIS'>
+diis_start_cycle = 1
+diis_space = 8
+diis_damp = 0
+SCF conv_tol = 1e-07
+SCF conv_tol_grad = None
+SCF max_cycles = 50
+direct_scf = True
+direct_scf_tol = 1e-13
+chkfile to save SCF result = /state/partition1/slurm_tmp/5881851.4294967291.0/tmp_1z21xh6
+max_memory 300 MB (current use 110 MB)
+
+
+******** PBC SCF flags ********
+N kpts = 1
+Exchange divergence treatment (exxdiv) = ewald
+    madelung (= occupied orbital energy shift) = 0.9064505495633752
+    Total energy shift due to Ewald probe charge = -1/2 * Nelec*madelung = -3.62580219825
+DF object = <pyscf.pbc.df.aft.AFTDF object at 0x7f9fd8acc890>
+XC functionals = pbe
+small_rho_cutoff = 0
+Uniform grid, mesh = [ 31  31 243]
+Set gradient conv threshold to 0.000316228
+nelec by numeric integration = 7.999999999997398
+init E= -12.1993791649471
+  HOMO = -0.727208104227  LUMO = -0.27073857561  gap/eV = 12.42117
+nelec by numeric integration = 7.9999999999991465
+cycle= 1 E= -11.119082096186  delta_E= 1.08  |g|= 0.459  |ddm|= 9.16
+  HOMO = -0.0611952615485  LUMO = 0.338951575396  gap/eV = 10.88855
+nelec by numeric integration = 7.999999999999626
+cycle= 2 E= -11.1853752664661  delta_E= -0.0663  |g|= 0.225  |ddm|=  7.7
+  HOMO = -0.271707408976  LUMO = 0.143342640241  gap/eV = 11.29409
+nelec by numeric integration = 7.9999999999994404
+cycle= 3 E= -11.202679604134  delta_E= -0.0173  |g|= 0.00147  |ddm|= 1.91
+  HOMO = -0.268847903815  LUMO = 0.14637333766  gap/eV = 11.29875
+nelec by numeric integration = 7.999999999999459
+cycle= 4 E= -11.2026803670429  delta_E= -7.63e-07  |g|= 0.000255  |ddm|= 0.00495
+  HOMO = -0.269226086491  LUMO = 0.145977060552  gap/eV = 11.29825
+nelec by numeric integration = 7.999999999999453
+cycle= 5 E= -11.2026803828474  delta_E= -1.58e-08  |g|= 0.000156  |ddm|= 0.000862
+  HOMO = -0.269240608262  LUMO = 0.145962454525  gap/eV = 11.29825
+nelec by numeric integration = 7.999999999999441
+Extra cycle  E= -11.2026803724011  delta_E= 1.04e-08  |g|= 0.000264  |ddm|= 0.00116
+converged SCF energy = -11.2026803724011
