@@ -27,6 +27,7 @@ Setting net.ipv4.ip_forward=1 will enable forwarding of network traffic to the a
     ```
 
 -   Add the line: `net.ipv4.ip_forward = 1`
+  
     ![image of ip_forward file](../../../images/ipforward-file.png)
 
 
