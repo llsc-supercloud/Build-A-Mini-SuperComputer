@@ -20,7 +20,7 @@ The three examples are:
 
 The .sh files will submit a batch job to one process that iterates through each of the input files, rather than executing any step in parallel. Each of the three examples are done serially. It is good practice to make sure your code runs in serial on this system before attempting to run anything in parallel.
 
-To run submit with:
+To run submit using LL Commands, use LLSub:
 
 ```bash
 LLsub submit_each.sh
@@ -36,4 +36,4 @@ sbatch -o submit_overall.sh.log-%j submit_overall.sh
 sbatch -o submit_norm.sh.log-%j submit_norm.sh
 ```
 
-This directory also contains a Jupyter Notebook that goes over the examples in more detail.
+
