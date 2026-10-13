@@ -89,5 +89,5 @@ The python script _llama_inf_client.py_ is client code that has hard-code query 
 To run the script,
 
 ```
-python llama_inf_client.py -h node1 -port 8080
+python llama_inf_client.py -h node1 -p 8080
 ```
