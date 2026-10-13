@@ -64,6 +64,9 @@ srun --nodelist=$MASTER_HOST --ntasks=1 ${LLAMABIN}/llama-server -m $MODELPATH \
 
 ## Test inference
 
+See the bash script run-inference-with-curl.sh.
+The following uses the Linux `curl` command to send a request to the inference server. 
+
 ```
 curl http://node1:8080/v1/chat/completions \
   -H "Content-Type: application/json" \
@@ -83,9 +86,10 @@ curl http://node1:8080/v1/chat/completions \
   }'
 
 ```
+
 ## Another test inference using a python script.
 
-The python script _llama_inf_client.py_ is client code that has hard-code query to pass to the LLM.
+The python script _llama_inf_client.py_ is client code that has hard-coded query to pass to the LLM.
 To run the script,
 
 ```
