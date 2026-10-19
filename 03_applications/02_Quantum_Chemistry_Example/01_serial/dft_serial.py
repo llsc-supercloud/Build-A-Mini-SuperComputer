@@ -11,6 +11,7 @@ from pyscf import lib
 import time
 import sys
 from pathlib import Path
+import csv
 
 
 
@@ -32,7 +33,6 @@ except ValueError:
     print("Invalid kinetic energy cutoff. Please provide a valid integer.")
     sys.exit(1)
 
-
  # Get the number of cores allocated for the job from the SLURM environment variable. If not set, default to 1 core.
 try:
     num_cores = int(os.environ.get('OMP_NUM_THREADS', 1)) 
@@ -48,7 +48,7 @@ except ValueError:
     print("Invalid file path. Please check the file path.")
     sys.exit(1)
 
-calc = path / f'dft_serial_{ke_cutoff}'
+# calc = path / f'dft_serial_{ke_cutoff}'
 
 # Convergence tolerance (Hartree) used to flag when successive energies
 # have stopped changing meaningfully -- mirrors the "energy convergence
@@ -88,9 +88,9 @@ cell = gto.Cell(
     ],
 
     # Name of the output file where the verbose calculations will be saved
-    output = f'{calc}.log',
+    # output = f'{calc}.log',
 
-    verbose = 4
+    # verbose = 4
 )
 
 
@@ -162,6 +162,8 @@ The convergence status of the SCF calculation is checked to determine if the cal
 The total energy is converted from Hartree to electron volts (eV) for easier interpretation.
 The results of the calculation, including the k-point mesh, number of k-points, wall time, total energy, and convergence status, are printed to the console in a formatted table.
 '''
+
+
 # Save the wall time taken for the calculation.
 wall_time = end_time - start_time
 
@@ -171,6 +173,22 @@ converged = mf.converged
 # Total energy converted from Hartree to electron volts (eV) for easier interpretation.
 e_tot = e_tot * 27.2114 
 
-print(f"k-point mesh: {kpt} {kpt} {kpt}")
-print(f"Kinetic energy (eV): {cell.ke_cutoff} {e_tot:.6f}")
-print(f"wall time (s): {wall_time:.6f} s" )
+header = ["K-point mesh","Kinetic energy (eV)","Wall time (s)", "Converged"]
+data = [kpt, cell.ke_cutoff, e_tot, wall_time, converged]
+
+
+# Output file where data will be saved.
+try:
+    path = Path.cwd() / "data"
+except ValueError:
+    print("Invalid file path. Please check the file path.")
+    sys.exit(1)
+
+output_file = path / "dft_serial_data.csv"
+
+
+# Save data to output file
+with open(output_file+'.csv', 'w') as file:
+    writer = csv.writer(file)
+    writer.writerow(header)
+    writer.writerow(data)

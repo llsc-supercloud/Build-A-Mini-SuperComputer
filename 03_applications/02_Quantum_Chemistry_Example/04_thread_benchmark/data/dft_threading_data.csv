@@ -1,0 +1,4 @@
+K-point,Threads,Kinetic energy (eV),Wall time (s),Converged
+1,1,25,-8294.956374,114.472881,True
+1,2,25,-8294.956374,103.577384,True
+1,4,25,-8294.956374,103.107282,True
