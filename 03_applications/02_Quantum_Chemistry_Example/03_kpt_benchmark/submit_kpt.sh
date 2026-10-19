@@ -7,13 +7,8 @@
 #SBATCH --nodes=1
 
 
-# load modules
-source /etc/profile 
-module purge
-module load conda/Python-ML-2026a-pytorch 
-
 # for reuthernet
-# export PATH=/home/gridsan/software/miniconda3/bin:$PATH
+export PATH=/home/gridsan/software/miniconda3/bin:$PATH
 
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export OPENBLAS_NUM_THREADS=$SLURM_CPUS_PER_TASK
