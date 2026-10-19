@@ -175,16 +175,16 @@ for kpt in kpt_mesh:
 # Output file where data will be saved.
 try:
     path = Path.cwd() / "data"
-    output_file = path / "dft_kpt_data.csv"
 except ValueError:
     print("Invalid file path. Please check the file path.")
     sys.exit(1)
 
 
 header = ["K-point","Kinetic energy (eV)","Wall time (s), Converged"]
+output_file = path / "dft_kpt_data.csv"
 
 # Save to the output file
 with open(output_file, 'w') as file:
     writer = csv.writer(file)
     writer.writerow(header)
-    writer.writerowr(data)
+    writer.writerows(data)
