@@ -14,5 +14,5 @@ export OPENBLAS_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export MKL_NUM_THREADS=$SLURM_CPUS_PER_TASK
 
 
-python /home/gridsan/landerson/pyscf_proj/01_serial/dft_serial.py 
+python dft_serial.py 
     
