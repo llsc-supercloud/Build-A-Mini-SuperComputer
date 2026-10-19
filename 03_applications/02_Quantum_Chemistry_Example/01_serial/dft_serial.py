@@ -178,7 +178,7 @@ output_file = path / "dft_serial_data.csv"
 
 
 # Save data to output file
-with open(output_file+'.csv', 'w') as file:
+with open(output_file, 'w') as file:
     writer = csv.writer(file)
     writer.writerow(header)
     writer.writerow(data)
