@@ -25,13 +25,6 @@ The commented code lines are there for testing during an
 interactive session.
 '''
 
-# Get the kinetic energy cutoff from the command line argument
-try:
-    # ke_cutoff = 200
-    ke_cutoff = int(sys.argv[1])
-except ValueError:
-    print("Invalid kinetic energy cutoff. Please provide a valid integer.")
-    sys.exit(1)
 
  # Get the number of cores allocated for the job from the SLURM environment variable. If not set, default to 1 core.
 try:
@@ -99,11 +92,7 @@ cell = gto.Cell(
 Set Calculation Parameters
 --------------------------------
 These are the "knobs" that will be adjusted in other scripts to control the accuracy 
-and performance of the calculation:
-
-1. cell.ke_cutoff = KE_CUTOFF from KE_CUTOFF_LIST
-2. kpt = KPT from KPOINT_LIST
-3. num_cores = OMP_NUM_THREADS 
+and performance of the calculation
 '''
 # Set the maximum memory for the calculation based on the amount of available RAM that can be used during the calculation
 # Calculation will fail if it requires more memory than this
@@ -113,7 +102,8 @@ cell.max_memory = 300 # in MB
 
 # Kinetic energy cutoff for the plane-wave basis set which determines accuracy of the calculation
 # Note: If you get a warning about the mesh being too small, you can increase the kinetic energy cutoff to improve the accuracy of the calculation.
-cell.ke_cutoff = int(ke_cutoff)
+ke_cutoff = 20
+cell.ke_cutoff = ke_cutoff
 
 # Number of dimensions of the crystal. 
 # In this case, we are performing a 2D calculation for a graphene sheet.
@@ -123,7 +113,7 @@ cell.dimension = 2
 cell.build()
 
 
-# List of k-point meshes to test. T
+# List of k-point meshes to test. 
 kpt = 1
 kmesh = cell.make_kpts([1,kpt,kpt])
 

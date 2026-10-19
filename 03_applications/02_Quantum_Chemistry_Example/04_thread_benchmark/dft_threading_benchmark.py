@@ -156,9 +156,6 @@ for thread in thread_list:
     # Total energy converted from Hartree to electron volts (eV) for easier interpretation.
     e_tot = e_tot * 27.2114
 
-# header = ["K-point","Kinetic energy (eV)","Wall time (s)", "Converged"]
-# data = f"{kpt},{cell.ke_cutoff},{e_tot:.6f},{wall_time:.6f},{converged}\n"
-
     wall_time = f"{(end_time - start_time):.6f}"
     e_tot = f"{(e_tot * 27.2114):.6f}"  # Convert from Hartree to eV
 

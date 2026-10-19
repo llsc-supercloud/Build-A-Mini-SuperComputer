@@ -169,7 +169,7 @@ for kpt in kpt_mesh:
     e_tot = f"{(e_tot * 27.2114):.6f}"  # Convert from Hartree to eV
 
     # print(f" {kpt} {converged}: {cell.ke_cutoff} {e_tot:.6f} eV {wall_time:.6f} s")
-    data.append([kpt, cell.ke_cutoff, e_tot:.6f, wall_time:.6f,converged])
+    data.append([kpt, cell.ke_cutoff, e_tot, wall_time,converged])
 
 
 # Output file where data will be saved.
@@ -187,4 +187,4 @@ header = ["K-point","Kinetic energy (eV)","Wall time (s), Converged"]
 with open(output_file, 'w') as file:
     writer = csv.writer(file)
     writer.writerow(header)
-    writer.writerowr(results)
+    writer.writerowr(data)
