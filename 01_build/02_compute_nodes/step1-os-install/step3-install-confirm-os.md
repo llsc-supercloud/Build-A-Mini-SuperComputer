@@ -10,7 +10,7 @@ Once you have written the OS onto the USB drive, you want to install it into the
 When the monitor comes up, you should see the Raspbian Desktop.  
 
 
-Open a terminal window.  User CTTL + Shift + '+' to increate the size and font of the terminal window.
+Open a terminal window.  Use CTTL + Shift + '+' to increate the size and font of the terminal window.
 
 #### Confirm that wifi is disabled on the compute node
 
@@ -37,8 +37,8 @@ It is important that you disable cloud control. To disable Cloud Control updates
 
 #### Elevated Privileges:
 
-!!! note "You will need root privileges to execute many of the commands for configuring the cluster. Be careful
-          with this power - you can change anything which can mangle your system"
+**Note You will need root privileges to execute many of the commands for configuring the cluster. Be careful
+          with this power - you can change anything which can mangle your system.**
 
 
 You have 2 options for gaining elevated privileges:

@@ -11,8 +11,10 @@ Dnsmasq does the job of DNS and DHCP.
 ```
    # Become root
    sudo su -
+
    # Update and upgrade the system packages.
    apt update && apt upgrade
+
    # Install dnsmasq
    apt install dnsmasq
 ```
@@ -40,7 +42,23 @@ The output should look like:
 ### Configure dnsmasq on the headnode
 The system will be using DHCP.  To enable DHCP, we need to set some 
 parameters in the file /etc/dsnmasq.conf
-In particular, the commands that we will modify are:
+
+The cleanest way to do this is to replace the default RaspberryPi file /etc/dsnmaasq.conf 
+with the `dnsmasq.conf` file in the network-scripts.  
+
+This assumes that you have cloned the git repo and your scripts and configure files are
+on the headnode of your system.  
+
+```
+  # Become root
+  sudo su -
+
+  # copy the file
+  cp /location-downloaded-scripts/dnsmasq.conf /etc/dnsmasq.conf
+```
+
+### The updated dnsmasq.conf includes the following new parameters:
+
 ```text
 # Network interface to listen to
 interface=eth0
@@ -72,14 +90,6 @@ dhcp-host=node3,10.0.0.53
 dhcp-host=node4,10.0.0.54
 ```
 
-The cleanest way to do this is to replace the default RaspberryPi file /etc/dsnmaasq.conf 
-with the `dnsmasq.conf` file in the network-scripts.  
-```
-  # Become root
-  sudo su -
-  # copy the file
-  cp /location-downloaded-scripts/dnsmasq.conf /etc/dnsmasq.conf
-```
 
 ### Start the dnsmasq server
 

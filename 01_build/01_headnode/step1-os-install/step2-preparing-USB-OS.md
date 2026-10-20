@@ -23,7 +23,7 @@ Click on Storage in the left hand menu to select the device that you will write 
 
 ### Applying Customizations
 
-You will see a dialog box asking if you want to customize the OS.  **Do not clck on Save until you have completed all of the modifications.**
+You will see a dialog box asking if you want to customize the OS.  **Do not click on Save until you have completed all of the modifications.**
 The imager will walk you through the customizations, after you have set the values for each item, select 'NEXT'.
 
 1.  Hostname: In the dialog box, type 'headnode' (without quotes) and hit next

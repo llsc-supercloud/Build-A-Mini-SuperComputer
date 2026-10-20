@@ -24,7 +24,7 @@ Click on Storage in the left hand menu to select the device that you will write 
 ### Applying Customizations
 Note that this needs to be completed for each node.  The only change will be node name: node1 to nodeN where N is the number of compute nodes that you have.  Once you have set the configuration for Node1, the imager should retain your previous selections but you should check each configuration option.
 
-You will see a dialog box asking if you want to customize the OS.  **Do not clck on Save until you have completed all of the modifications.**
+You will see a dialog box asking if you want to customize the OS.  **Do not click on Save until you have completed all of the modifications.**
 The imager will walk you through the customizations, after you have set the values for each item, select 'NEXT'.
 
 1.  Hostname: In the dialog box, type node_number (without quotes) and hit. (NOTE: node_number is the compute node number associated with the board you are imaging.)
