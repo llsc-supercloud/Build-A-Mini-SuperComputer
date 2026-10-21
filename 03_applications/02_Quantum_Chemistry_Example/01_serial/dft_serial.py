@@ -1,13 +1,19 @@
 '''
-This module is demonstrate an SCF calculation of a crystal for a 
-FIXED set of k-point meshes, kinetic energy, and threads using density functional theory.
-The results are printed to the console and saved to a log file.
+----------
+SERIAL RUN
+----------
+This module demonstrates an DFT calculation of a crystal at a 
+FIXED set of k-point meshes, kinetic energy, and threads.
+The results are printed to the out and log file.
+
+Note: See README if you'd like to view the molecular orbitals using Avogadro2.
 '''
 
 import numpy as np
 import os
 from pyscf.pbc import dft, gto, df
 from pyscf import lib
+# from pyscf.tools import molden
 import time
 import sys
 from pathlib import Path
@@ -15,37 +21,31 @@ import csv
 
 
 
-'''
---------------------------------
-Set Calculation Parameters
--------------------------------
-Get the kinetic energy cutoff, kpoints, and number of threads
-from the command line arguments
-The commented code lines are there for testing during an 
-interactive session.
-'''
-
-
- # Get the number of cores allocated for the job from the SLURM environment variable. If not set, default to 1 core.
+# This sets the number of threads used by pyscf. It's read in from submit_ke_cutoff.sh from the following:
+    #SBATCH --cpus-per-task = 4
+    # export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 try:
     num_cores = int(os.environ.get('OMP_NUM_THREADS', 1)) 
-    # print(lib.num_threads()) 
 except ValueError:
     print("Invalid number of cores. Please provide a valid integer.")
     sys.exit(1)
 
-# Name of output file where the results will be saved.
-try:
-    path = Path.cwd() / "log"
-except ValueError:
-    print("Invalid file path. Please check the file path.")
-    sys.exit(1)
+'''
+VERBOSE OUTPUT 
+-------------
+To view the molecular orbital energies and other output, uncomment the try-except code block and 
+verbose = 4 and output parameters in the cell.GTO(...) code block below.  
+'''
+# try:
+#     path = Path.cwd() / "log"
+# except ValueError:
+#     print("Invalid file path. Please check the file path.")
+#     sys.exit(1)
 
 # calc = path / f'dft_serial_{ke_cutoff}'
 
 # Convergence tolerance (Hartree) used to flag when successive energies
-# have stopped changing meaningfully -- mirrors the "energy convergence
-# threshold" concept from the QE exercise.
+# have stopped changing meaningfully.
 convergence_total_hartree = 1e-4
 
 
@@ -80,9 +80,8 @@ cell = gto.Cell(
         [0.0, 0.0, 20.0]
     ],
 
-    # Name of the output file where the verbose calculations will be saved
+    # Uncomment parameters below to view additional information about the DFT calculation 
     # output = f'{calc}.log',
-
     # verbose = 4
 )
 
@@ -96,12 +95,12 @@ and performance of the calculation
 '''
 # Set the maximum memory for the calculation based on the amount of available RAM that can be used during the calculation
 # Calculation will fail if it requires more memory than this
-# Note: this total memory limit is for MIT SuperCloud
 # Sets a 3GB limit per process for Rasberry Pi
 cell.max_memory = 300 # in MB
 
 # Kinetic energy cutoff for the plane-wave basis set which determines accuracy of the calculation
-# Note: If you get a warning about the mesh being too small, you can increase the kinetic energy cutoff to improve the accuracy of the calculation.
+# Note: If you get a warning about the mesh being too small, you can increase the kinetic energy 
+#cutoff to improve the accuracy of the calculation.
 ke_cutoff = 20
 cell.ke_cutoff = ke_cutoff
 
@@ -113,7 +112,8 @@ cell.dimension = 2
 cell.build()
 
 
-# List of k-point meshes to test. 
+# Sets the number of sampling points. The higher the number, the more precise the total energy is at the
+# potential cost of performance speed down  
 kpt = 1
 kmesh = cell.make_kpts([1,kpt,kpt])
 
@@ -126,7 +126,7 @@ This will perform the DFT calculation that will determine the total energy of th
 The calculation is performed using the Kohn-Sham method with a specific exchange-correlation functional (PBE in this case). 
 The density fitting method is used to speed up the calculation by approximating the electron density using a set of auxiliary basis functions. 
 The AFTDF method is used for this purpose, which is a specific implementation of density fitting for periodic systems. 
-The SCF calculation is executed and the CPU time taken for the calculation is recorded. 
+The SCF calculation is executed and the wall clock time taken for the calculation is recorded. 
 '''
 # Perform the DFT calculation using the Kohn-Sham method with a specific exchange-correlation functional (PBE in this case).
 mf = dft.KRKS(cell,kmesh)
@@ -137,7 +137,7 @@ mf.xc = 'pbe'
 mf.with_df = df.AFTDF(cell, kmesh)
 mf.with_df.coul_poly_cutoff = 2
 
-# Execute the SCF calculation (mf.kernel()) and record the CPU time taken for the calculation.
+# Execute the SCF calculation (mf.kernel()) and record the wall time.
 start_time = time.time()
 e_tot = mf.kernel()
 end_time = time.time()
@@ -150,12 +150,14 @@ Collect and Print Results
 The wall time taken for the calculation is calculated by subtracting the start time from the end time
 The convergence status of the SCF calculation is checked to determine if the calculation converged successfully.
 The total energy is converted from Hartree to electron volts (eV) for easier interpretation.
-The results of the calculation, including the k-point mesh, number of k-points, wall time, total energy, and convergence status, are printed to the console in a formatted table.
+The results of the calculation, including the k-point mesh, number of threads, wall time, total energy, and convergence status, 
+are printed to the console in a formatted table.
 '''
 
 
 # Save the wall time taken for the calculation.
 wall_time = end_time - start_time
+
 
 # Boolean value that prints whether the scf converged.
 converged = mf.converged
@@ -175,6 +177,20 @@ except ValueError:
     sys.exit(1)
 
 output_file = path / "dft_serial_data.csv"
+
+
+'''
+Molecular Orbital Energy
+-----------------------
+If you want to plot the molecular orbitals, uncomment the code blocks below
+The molden file can be read by tools like Avogadro2 and JMol 
+'''
+# from pyscf import lib, lo
+# from pyscf.tools import molden
+
+# molden_file = path / "cc_orbitals.molden"
+# c_loc_orth = lo.orth.orth_ao(cell)
+# molden.from_mo(cell, molden_file, c_loc_orth)
 
 
 # Save data to output file

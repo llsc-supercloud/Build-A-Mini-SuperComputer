@@ -6,8 +6,9 @@
 #SBATCH --nodes=1
 
 
-# Uncomment the following Path on Raspberry Pi cluster to use the conda environment
+# The following Path on Raspberry Pi cluster to use the conda environment
 export PATH=/home/gridsan/software/miniconda3/bin:$PATH
+
 
 export OMP_NUM_THREADS=$SLURM_CPUS_PER_TASK
 export OPENBLAS_NUM_THREADS=$SLURM_CPUS_PER_TASK

@@ -1,0 +1,16 @@
+4
+
+WARN: mesh [13 13 87] is not enough for AFTDF.get_nuc function to get integral accuracy 1e-08.
+Recommended mesh is [ 35  35 273].
+
+converged SCF energy = -11.2024324413107
+
+WARN: mesh [13 13 87] is not enough for AFTDF.get_nuc function to get integral accuracy 1e-08.
+Recommended mesh is [ 35  35 273].
+
+converged SCF energy = -11.3136939962815
+
+WARN: mesh [13 13 87] is not enough for AFTDF.get_nuc function to get integral accuracy 1e-08.
+Recommended mesh is [ 35  35 273].
+
+converged SCF energy = -11.3762969498269
