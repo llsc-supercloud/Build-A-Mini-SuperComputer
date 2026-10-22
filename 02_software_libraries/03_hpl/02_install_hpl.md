@@ -22,7 +22,7 @@ MPICC is in OpenMPI-5.0.10 bin directory.
 ```
   export LD_LIBRARY_PATH=/home/gridsan/software/openmpi-5.0.10/lib:$LD_LIBRARY_PATH
   export LD_LIBRARY_PATH=/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu/openblas-openmp:$LD_LIBRARY_PATH
-
+  export LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu
 ```
 4.  Modify Makefile
 
