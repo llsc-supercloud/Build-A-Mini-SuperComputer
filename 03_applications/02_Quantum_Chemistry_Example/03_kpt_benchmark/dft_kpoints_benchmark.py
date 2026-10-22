@@ -24,11 +24,15 @@ import csv
 BENCHMARK PARAMETER
 --------------------
 Get k-point mesh to sweep, in increasing density, from the command line argument
-Note: Keep list modest for a Raspberry Pi cluster -- k-point cost grows roughly linearly to
-super-linearly, and RPi nodes have limited RAM.
+Note: Keep highest integer value modest for a Raspberry Pi cluster -- 
+k-point cost grows roughly linearly to super-linearly, and RPi nodes have limited RAM.
 
 '''
-kpt_mesh = [1, 2, 4]
+kpt_mesh = []
+# kpt_mesh = [1, 2, 4]
+
+ke_cutoff = # Enter result from kinetic energy benchmark that maintained performance
+
 
 
 # Get the number of threads from the command line argument
@@ -42,19 +46,23 @@ except ValueError as e:
 print(lib.num_threads())
 
 
-# Name of output file where the results will be saved.
 try:
     path = Path.cwd() / "log"
 except ValueError:
     print("Invalid file path. Please check the file path.")
     sys.exit(1)
 
+'''
+VERBOSE OUTPUT 
+-------------
+To view the molecular orbital energies and other output, uncomment the try-except code block and 
+verbose = 4 and output parameters in the cell.GTO(...) code block below.  
+'''
 # This is the name of the calculation being performed. It is used to name the output file where the results will be saved.
 # calc = path / f'dft_kpt_{kpt}'
 
 # Convergence tolerance (Hartree) used to flag when successive energies
-# have stopped changing meaningfully -- mirrors the "energy convergence
-# threshold" concept from the QE exercise.
+# have stopped changing meaningfully 
 convergence_total_hartree = 1e-4
 
 
@@ -111,7 +119,7 @@ cell.max_memory = 300 # in MB
 
 # kinetic energy cutoff for the plane-wave basis set which determines accuracy of the calculation
 # Note: If you get a warning about the mesh being too small, you can increase the kinetic energy cutoff to improve the accuracy of the calculation.
-ke_cutoff = 25
+
 cell.ke_cutoff = ke_cutoff 
 
 # Number of dimensions of the crystal. In this case, we are performing a 2D calculation for a graphene sheet.
@@ -121,70 +129,75 @@ cell.build()
 
 data = []
 
-for kpt in kpt_mesh:
-    kmesh = cell.make_kpts([1,kpt,kpt])
-
-    '''
-    ---------------------------
-    Perform the DFT Calculation
-    ---------------------------
-    This will perform the DFT calculation that will determine the total energy of the crystal for a specific k-point mesh. 
-    The calculation is performed using the Kohn-Sham method with a specific exchange-correlation functional (PBE in this case). 
-    The density fitting method is used to speed up the calculation by approximating the electron density using a set of auxiliary basis functions. 
-    The AFTDF method is used for this purpose, which is a specific implementation of density fitting for periodic systems. 
-    The SCF calculation is executed and the CPU time taken for the calculation is recorded. 
-    '''
-    # Perform the DFT calculation using the Kohn-Sham method with a specific exchange-correlation functional (PBE in this case).
-    mf = dft.KRKS(cell,kmesh)
-    mf.xc = 'pbe'
-
-    # The density fitting method is used to speed up the calculation by approximating the electron density using a set of auxiliary basis functions. 
-    #The AFTDF method is used for this purpose, which is a specific implementation of density fitting for periodic systems.
-    mf.with_df = df.AFTDF(cell, kmesh)
-    mf.with_df.coul_poly_cutoff = 2
-            
-    # Execute the SCF calculation (mf.kernel()) and record the CPU time taken for the calculation.
-    start_time = time.time()
-    e_tot = mf.kernel()
-    end_time = time.time()
-
-
-    '''
-    -------------------------
-    Collect and Print Results
-    -------------------------
-    The wall time taken for the calculation is calculated by subtracting the start time from the end time
-    The convergence status of the SCF calculation is checked to determine if the calculation converged successfully.
-    The total energy is converted from Hartree to electron volts (eV) for easier interpretation.
-    The results of the calculation, including the k-point mesh, number of k-points, wall time, total energy, and convergence status, are printed to the console in a formatted table.
-    '''
-    # Save the wall time taken for the calculation.
-    wall_time = end_time - start_time
-
-    # Boolean value that prints whether the scf converged.
-    converged = mf.converged
-
-    # Total energy converted from Hartree to electron volts (eV) for easier interpretation.
-    wall_time = f"{(end_time - start_time):.6f}"
-    e_tot = f"{(e_tot * 27.2114):.6f}"  # Convert from Hartree to eV
-
-    # print(f" {kpt} {converged}: {cell.ke_cutoff} {e_tot:.6f} eV {wall_time:.6f} s")
-    data.append([kpt, cell.ke_cutoff, e_tot, wall_time,converged])
-
-
-# Output file where data will be saved.
 try:
-    path = Path.cwd() / "data"
-except ValueError:
-    print("Invalid file path. Please check the file path.")
-    sys.exit(1)
+    for kpt in kpt_mesh:
+        kmesh = cell.make_kpts([1,kpt,kpt])
+
+        '''
+        ---------------------------
+        Perform the DFT Calculation
+        ---------------------------
+        This will perform the DFT calculation that will determine the total energy of the crystal for a specific k-point mesh. 
+        The calculation is performed using the Kohn-Sham method with a specific exchange-correlation functional (PBE in this case). 
+        The density fitting method is used to speed up the calculation by approximating the electron density using a set of auxiliary basis functions. 
+        The AFTDF method is used for this purpose, which is a specific implementation of density fitting for periodic systems. 
+        The SCF calculation is executed and the CPU time taken for the calculation is recorded. 
+        '''
+        # Perform the DFT calculation using the Kohn-Sham method with a specific exchange-correlation functional (PBE in this case).
+        mf = dft.KRKS(cell,kmesh)
+        mf.xc = 'pbe'
+
+        # The density fitting method is used to speed up the calculation by approximating the electron density using a set of auxiliary basis functions. 
+        #The AFTDF method is used for this purpose, which is a specific implementation of density fitting for periodic systems.
+        mf.with_df = df.AFTDF(cell, kmesh)
+        mf.with_df.coul_poly_cutoff = 2
+                
+        # Execute the SCF calculation (mf.kernel()) and record the CPU time taken for the calculation.
+        start_time = time.time()
+        e_tot = mf.kernel()
+        end_time = time.time()
 
 
-header = ["K-point","Kinetic energy (eV)","Wall time (s), Converged"]
-output_file = path / "dft_kpt_data.csv"
+        '''
+        -------------------------
+        Collect and Print Results
+        -------------------------
+        The wall time taken for the calculation is calculated by subtracting the start time from the end time
+        The convergence status of the SCF calculation is checked to determine if the calculation converged successfully.
+        The total energy is converted from Hartree to electron volts (eV) for easier interpretation.
+        The results of the calculation, including the k-point mesh, number of k-points, wall time, total energy, and convergence status, are printed to the console in a formatted table.
+        '''
+        # Save the wall time taken for the calculation.
+        wall_time = end_time - start_time
 
-# Save to the output file
-with open(output_file, 'w') as file:
-    writer = csv.writer(file)
-    writer.writerow(header)
-    writer.writerows(data)
+        # Boolean value that prints whether the scf converged.
+        converged = mf.converged
+
+        # Total energy converted from Hartree to electron volts (eV) for easier interpretation.
+        wall_time = f"{(end_time - start_time):.6f}"
+        e_tot = f"{(e_tot * 27.2114):.6f}"  # Convert from Hartree to eV
+
+        data.append([kpt, threads, cell.ke_cutoff, e_tot, wall_time,converged])
+
+        print(f"Kpoint mesh benchmark completed: 1 {kpt} {kpt}")
+
+except Exception as error:
+    print(f"Loop failed with error: {error}. Dumnping data...")
+
+finally:
+    try:
+        path = Path.cwd() / "data"
+    except ValueError:
+        print("Invalid file path. Please check the file path.")
+        sys.exit(1)
+
+
+    header = ["K-point", "Threads","Kinetic energy (eV)","Wall time (s), Converged"]
+    output_file = path / "dft_kpt_data.csv"
+
+
+    # Save to the output file
+    with open(output_file, 'w') as file:
+        writer = csv.writer(file)
+        writer.writerow(header)
+        writer.writerows(data)

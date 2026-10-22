@@ -9,7 +9,7 @@
 
 # for reuthernet
 export PATH=/home/gridsan/software/miniconda3/bin:$PATH
-# export LD_LIBRARY_PATH=/path/to/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu/openblas-openmp:$LD_LIBRARY_PATH
 
 python dft_threading_benchmark.py
 
