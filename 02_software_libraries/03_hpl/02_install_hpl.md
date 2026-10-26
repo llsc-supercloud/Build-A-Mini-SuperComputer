@@ -27,6 +27,7 @@ MPICC is in OpenMPI-5.0.10 bin directory.
 4.  Modify Makefile
 
 Generate Make.rpi from template Makefile. Template files are found in the setup directory. 
+
 **Note that we need to use the full path to the BLAS libraries so that the code is properly compiled and linked.** 
 
 ```
@@ -34,7 +35,9 @@ Generate Make.rpi from template Makefile. Template files are found in the setup 
   cp setup/Make.HPUX__FBLAS ./Make.rpi
 ```
 
-The following illustrate the variables to modify in Make.rpi NOTE: Makefiles are persnickety, and require tabs for spacing.  When editing the Make.rpi file, it is best to only copy and replace the information to the right of the '=' sign.
+The following illustrate the variables to modify in Make.rpi 
+
+**NOTE: Makefiles are persnickety, and require tabs for spacing.  When editing the Make.rpi file, it is best to only copy and replace the information to the right of the '=' sign.**
 
 ```
 ARCH = rpi 
