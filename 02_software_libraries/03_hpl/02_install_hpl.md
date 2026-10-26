@@ -26,7 +26,7 @@ MPICC is in OpenMPI-5.0.10 bin directory.
 ```
 4.  Modify Makefile
 
-Generate Make.rpi from template Makefile. Template files are found in the setup directory.
+Generate Make.rpi from template Makefile. Template files are found in the setup directory. Note that we need to use the full path to the BLAS libraries so that the code is properly compiled and linked. 
 
 ```
   cd hpl
@@ -41,7 +41,7 @@ TOPdir = /home/gridsan/software/hpl
 MPIdir = /home/gridsan/software/openmpi-5.0.10
 MPIplat = $(MPIdir)
 MPIlib = $(MPIdir)/lib/libmpi.la
-BLASlib = -L/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu/openblas-openmp -lblas –lopenblas –lm -lgomp
+BLASlib      = -L/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu/openblas-openmp -lblas /usr/lib/aarch64-linux-gnu/libm.a /usr/lib/gcc/aarch64-linux-gnu/14/libgomp.a
  
 HPL_OPTS = -DHPL_CALL_CBLAS -I/home/gridsan/software/openblas/usr/include/aarch64-linux-gnu/openblas-openmp 
  
