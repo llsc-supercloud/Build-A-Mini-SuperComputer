@@ -33,7 +33,7 @@ Generate Make.rpi from template Makefile. Template files are found in the setup 
   cp setup/Make.HPUX__FBLAS ./Make.rpi
 ```
 
-The following illustrate the variables to modify in Make.rpi
+The following illustrate the variables to modify in Make.rpi NOTE: Makefiles are persnickety, and require tabs for spacing.  When editing the Make.rpi file, it is best to only copy and replace the information to the right of the '=' sign.
 
 ```
 ARCH = rpi 
