@@ -41,7 +41,7 @@ TOPdir = /home/gridsan/software/hpl
 MPIdir = /home/gridsan/software/openmpi-5.0.10
 MPIplat = $(MPIdir)
 MPIlib = $(MPIdir)/lib/libmpi.la
-BLASlib      = -L/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu/openblas-openmp -lblas /usr/lib/aarch64-linux-gnu/libm.a /usr/lib/gcc/aarch64-linux-gnu/14/libgomp.a
+BLASlib = -L/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu/openblas-openmp -lblas /usr/lib/aarch64-linux-gnu/libm.a /usr/lib/gcc/aarch64-linux-gnu/14/libgomp.a
  
 HPL_OPTS = -DHPL_CALL_CBLAS -I/home/gridsan/software/openblas/usr/include/aarch64-linux-gnu/openblas-openmp 
  
