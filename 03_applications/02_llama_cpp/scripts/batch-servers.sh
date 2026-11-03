@@ -16,7 +16,8 @@ export LD_LIBRARY_PATH=/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu
 
 MASTER_HOST=$(hostname -s)
 MASTER_PORT=8080
-echo $MASTER_HOST
+echo "LLAMA.CPP NODE NAME: " $MASTER_HOST
+echo "LLAMA.CPP PORT: " $MASTER_PORT
 let "worker_num=(${SLURM_NNODES} - 1)"
 # Listening port  for the RPC server
 PORT_NUM=50052
