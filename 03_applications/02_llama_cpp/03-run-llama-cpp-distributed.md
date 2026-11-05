@@ -1,4 +1,4 @@
-# Run llama.cpp server for inference
+# Run distributed llama.cpp server for inference
 
 This is an example of running llama.cpp on a distributed system, ie multiple nodes.
 The nodes will be using RPC to communicate with one another.
