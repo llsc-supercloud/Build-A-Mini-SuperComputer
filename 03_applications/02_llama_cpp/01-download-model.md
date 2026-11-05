@@ -2,6 +2,9 @@
 
 You will need the Huggingface huggingface_hub package for doing downloads.
 
+Download the model as a user, not admin.
+
+
 ```
 # Install Huggingface repo utilities which are used for create, delete, update and retrieve information from the repos.
 export PATH=/home/gridsan/software/miniforge3:$PATH

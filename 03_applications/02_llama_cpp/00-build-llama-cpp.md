@@ -2,6 +2,8 @@
 
 ## Download llama.cpp
 
+Download and build llama.cpp as admin. 
+
 ```
 git clone https://github.com/ggml-org/llama.cpp
 ```

@@ -3,6 +3,7 @@
 Llama.cpp works with models in the GGUF format.
 
 Download packages required to do the Huggingface (HF) model weights to GGUF conversion.
+Do this as a user, not admin.
 
 ```
 #  Need Pytorch, sentencepiece and transformers to do conversion.
