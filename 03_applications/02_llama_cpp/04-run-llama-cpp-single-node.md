@@ -1,4 +1,4 @@
-# Run llama.cpp server for inference
+# Run single node llama.cpp server for inference
 
 This is an example of running llama.cpp on a single node.
 Here we use the TinyLlama-1.1B-Chat-v1.0 model which downloaded, converted the GGUF format and quantized to 4-bit.
