@@ -1,19 +1,21 @@
 # Run llama.cpp server for inference
 
-This is an example of running llama.cpp on a distributed system, ie multiple nodes.
-The nodes will be using RPC to communicate with one another.
+This is an example of running llama.cpp on a single node.
 Here we use the TinyLlama-1.1B-Chat-v1.0 model which downloaded, converted the GGUF format and quantized to 4-bit.
 
-## Start the RPC server and llama.cpp server
+NOTE: These scripts should be from your user account, not admin or root.
 
-The following is a sbatch script to start the rpc-server and llama-server.
+## Start the  llama.cpp server
+
+The following is a sbatch script to start the  llama-server on single node.
+See script `batch-single-server.sh`.
 
 ```bash
 #!/bin/bash
-#SBATCH --job-name=rpc-server
+#SBATCH --job-name=llama-cpp-server
 #SBATCH --output %j.out
 #SBATCH --partition=pi4
-#SBATCH -N 3
+#SBATCH -N 1
 
 ## Set PATH
 export LLAMACPP_PATH=/home/gridsan/software/llama.cpp
@@ -25,28 +27,9 @@ export LD_LIBRARY_PATH=/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu
 
 MASTER_HOST=$(hostname -s)
 MASTER_PORT=8080
-echo $MASTER_HOST
-let "worker_num=(${SLURM_NNODES} - 1)"
-PORT_NUM=50052
+echo "LLAMA.CPP NODE NAME: " $MASTER_HOST
+echo "LLAMA.CPP PORT: " $MASTER_PORT
 
-NODELISTS=$SLURM_JOB_NODELIST
-echo $NODELISTS
-
-#NODENAMES=$(scontrol show hostnames | tr '\n' ',')
-echo $NODENAMES
-NODENAMES=$( scontrol show hostnames | tr '\n' ',' )
-echo $NODENAMES
-IFS="," read -r -a nodearray <<< "$NODENAMES"
-NODELIST=""
-for i in "${nodearray[@]}"; do
-   if [ "$i" != "$MASTER_HOST" ]; then
-      NODELIST+=$i":$PORT_NUM,"
-   fi
-done
-
-## Start RPC server on node2 and node3
-echo $NODELIST
-srun --nodes=${worker_num} --ntasks=${worker_num} --exclude=$MASTER_HOST ${LLAMABIN}/rpc-server -c -p $PORT_NUM -H 0.0.0.0 -t 4 &
 
 # Run llama-server on node1
 # q8_0 is supposed to halve the cache memory compared to fp16.
@@ -58,14 +41,15 @@ srun --nodelist=$MASTER_HOST --ntasks=1 ${LLAMABIN}/llama-server -m $MODELPATH \
   --cache-type-v q8_0 \
   --spec-draft-type-k q8_0 \
   --spec-draft-type-v q8_0 \
-  --ctx-size 2048  --rpc $NODELIST
+  --ctx-size 2048
 
 ```
 
 ## Test inference
 
-See the bash script run-inference-with-curl.sh.
+
 The following uses the Linux `curl` command to send a request to the inference server. 
+See the bash script run-inference-with-curl.sh. The run-inference-with-curl.sh script can be run on the headnode.
 
 ```
 curl http://node1:8080/v1/chat/completions \
@@ -94,4 +78,10 @@ To run the script,
 
 ```
 python llama_inf_client.py -h node1 -p 8080
+```
+
+## Run the llama.cpp server on single node (non-distributed)
+
+```
+ LLsub ./batch-single-server.sh
 ```
