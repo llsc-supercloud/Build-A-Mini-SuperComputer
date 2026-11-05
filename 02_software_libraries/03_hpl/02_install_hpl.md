@@ -22,18 +22,22 @@ MPICC is in OpenMPI-5.0.10 bin directory.
 ```
   export LD_LIBRARY_PATH=/home/gridsan/software/openmpi-5.0.10/lib:$LD_LIBRARY_PATH
   export LD_LIBRARY_PATH=/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu/openblas-openmp:$LD_LIBRARY_PATH
-
+  export LD_LIBRARY_PATH=/usr/lib/aarch64-linux-gnu:$LD_LIBRARY_PATH
 ```
 4.  Modify Makefile
 
-Generate Make.rpi from template Makefile. Template files are found in the setup directory.
+Generate Make.rpi from template Makefile. Template files are found in the setup directory. 
+
+**Note that we need to use the full path to the BLAS libraries so that the code is properly compiled and linked.** 
 
 ```
   cd hpl
   cp setup/Make.HPUX__FBLAS ./Make.rpi
 ```
 
-The following illustrate the variables to modify in Make.rpi
+The following illustrate the variables to modify in Make.rpi 
+
+**NOTE: Makefiles are persnickety, and require tabs for spacing.  When editing the Make.rpi file, it is best to only copy and replace the information to the right of the '=' sign.**
 
 ```
 ARCH = rpi 
@@ -41,13 +45,13 @@ TOPdir = /home/gridsan/software/hpl
 MPIdir = /home/gridsan/software/openmpi-5.0.10
 MPIplat = $(MPIdir)
 MPIlib = $(MPIdir)/lib/libmpi.la
-BLASlib = -L/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu/openblas-openmp -lblas –lopenblas –lm -lgomp
+BLASlib = -L/home/gridsan/software/openblas/usr/lib/aarch64-linux-gnu/openblas-openmp -lblas /usr/lib/aarch64-linux-gnu/libm.a /usr/lib/gcc/aarch64-linux-gnu/14/libgomp.a
  
 HPL_OPTS = -DHPL_CALL_CBLAS -I/home/gridsan/software/openblas/usr/include/aarch64-linux-gnu/openblas-openmp 
  
 CC = mpicc 
  
-CCFLAGS = $(HPL_DEFS) -O2 
+CCFLAGS = $(HPL_DEFS) 
  
 LINKER = mpicc 
 ```

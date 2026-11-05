@@ -1,0 +1,15 @@
+==========================================================================
+KPOINTS  |  CONVERGED  |  KE_CUTOFF  |  TOTAL ENERGY (Ev)  |  WALLTIME(s)
+=========================================================================
+48
+overwrite output file: dft_kpt_1.txt
+ 1 True: 200 -304.840664 eV 384.864024 s
+48
+output file: dft_kpt_2.txt
+ 2 True: 200 -307.864307 eV 471.071048 s
+48
+output file: dft_kpt_4.txt
+ 4 True: 200 -309.568280 eV 832.680147 s
+=========================================
+ Benchmark Complete. Summary of results:
+=========================================

@@ -1,0 +1,4 @@
+overwrite output file: /home/gridsan/landerson/pyscf_proj/serial/log/dft_serial_200.log
+k-point mesh: 1 1 1
+Kinetic energy (eV): 200 -304.840617
+wall time (s): 253.299696 s

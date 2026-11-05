@@ -1,9 +1,12 @@
 
 The first step in setting up our network is to set the IP Table rules:
 
-To start, connect to the headnode and open a terminal window and become root. 
+To start, 
+-   connect to the headnode 
+-   open a terminal window 
+-   become root. 
 
-!!! danger "Be careful with sudo su -
+!!! danger "Be careful with root "
     Root is powerful.  We can always back out and redo everything so be cautious but not afraid.
 
 To become root, at the Linux command line, execute the command
@@ -26,7 +29,8 @@ Setting net.ipv4.ip_forward=1 will enable forwarding of network traffic to the a
       vi 99-ipforward.conf
     ```
 
--   Add the line: 'net.ipv4.ip_forward = 1'
+-   Add the line: `net.ipv4.ip_forward = 1`
+  
     ![image of ip_forward file](../../../images/ipforward-file.png)
 
 

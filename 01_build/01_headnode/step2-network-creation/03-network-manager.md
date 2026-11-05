@@ -40,6 +40,6 @@ Second, confirm that the address 10.0.0.1 is being used for eth0.
     ifconfig
 ```
 Scroll up to eth0, and check to see that you see `inet 10.0.0.1` as in the image below.
-![confirming eth0](../../../images/nmcli-test-confirm)
+![confirming eth0](../../../images/nmcli-test-confirm.png)
 
 Now that the network is configured, it is time to configure the compute nodes.
