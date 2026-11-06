@@ -21,5 +21,6 @@ python /home/gridsan/software/llama.cpp/convert_hf_to_gguf.py ./tinyllama --outf
 Quantize from FP16 to Q4_K_M ( 4-bit, K grouped quantization with scale/zero point, M medium precision).
 
 ```
+export PATH=/home/gridsan/software/llama.cpp/build/bin:$PATH
 llama-quantize tinyllama/tinyllama-1.1B-Chat-v1.0.gguf tinyllama/tinyllama-1.1B-Chat-v1.0_Q4_K_M.gguf Q4_K_M
 ```
