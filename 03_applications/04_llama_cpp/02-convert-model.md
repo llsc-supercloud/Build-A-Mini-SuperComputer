@@ -3,14 +3,18 @@
 Llama.cpp works with models in the GGUF format.
 
 Download packages required to do the Huggingface (HF) model weights to GGUF conversion.
-Do this as a user, not admin.
+
+As admin install the pytorch, transformer and sentencepiece to /home/gridsan/software/miniforge3.
 
 ```
+# Install as admin
 #  Need Pytorch, sentencepiece and transformers to do conversion.
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cpu
 pip install transformers
 pip install sentencepiece
 ```
+
+Do this as a user, not admin. 
 Run the script to convert the HF to FP16 GGUF format. 
 
 ```
