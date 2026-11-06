@@ -4,21 +4,31 @@ from typing import Iterable, List
 import requests
 import multiprocessing as mp
 
+#MODEL=""
+#ADDR=""
 
-parser = argparse.ArgumentParser(prog='Inference Client',description='Arguments for Client to connect with Inference server', add_help=False)
-parser.add_argument("-p",  dest="port", type=int, default=8080, help="Port")
-parser.add_argument("-h",  dest="host", type=str, default="node1", help="Host name")
-args = parser.parse_args()
+def get_model_name(url) :
 
-nodeName = args.host
-port = args.port
-addr = f"http://{nodeName}:{port}/v1/chat/completions"
-addrModel = f"http://{nodeName}:{port}/v1/models"
+    # Get model
+    response = requests.get(url)
+    print(response.text + "\n")
+    modelStr = json.loads(response.text)["data"][0]["id"]
+    return modelStr
+def get_payload(prompt: str ) :
+    # Set up information to send
+    data = {
+            "messages": [
+              	{ "role":"system",
+                  "content" : "You are a helpful assistant",
+                },
+                {"role":"user","content": prompt} ],
+            "model": modelStr,
+            "max_tokens": 400,
+            "temperature": 0.2,
+           }
 
-# Get model
-response = requests.get(addrModel)
-print(response.text)
-modelStr = json.loads(response.text)["data"][0]["id"]
+    return data 
+
 
 def post_http_request(prompt: str,
                       api_url: str,
@@ -30,14 +40,7 @@ def post_http_request(prompt: str,
     """
 
     headers = {"Content-Type": "application/json"}
-
-    # Set up information to send
-    data = {
-            "prompt": prompt,
-            "model": modelStr,
-            "max_tokens": 400,
-            "temperature": 0.2,
-           }
+    data = get_payload(prompt)
 
     # Request response
     response = requests.post(api_url, headers=headers, json=data, stream=True)
@@ -51,21 +54,17 @@ def get_response(response: requests.Response) -> List[str]:
     """
 
     # Load text
-    data = json.loads(response.content)
+    #data = json.loads(response.content)
+    data = response.json()
     #print(str(data))
     output = data["choices"][0]["message"]["content"]
     #output = str(data)
     return output
 
-prompt = "Tell me what Lincoln Laboratory works on."
 
-response = post_http_request(prompt=prompt, api_url=addr, modelStr=modelStr)
+#APIURL = addr
 
-print(get_response(response))
-
-APIURL = addr
-
-def post_http_request_mp(prompt: str) -> requests.Response:
+def post_http_request_mp( prompt: str) -> requests.Response:
     """
     Send (Post) a request to the LLM server.
     """
@@ -74,30 +73,47 @@ def post_http_request_mp(prompt: str) -> requests.Response:
     headers = {"Content-Type": "application/json"}
 
     # Set up information to send
-    data = {
-            "prompt": prompt,
-            "model": modelStr,
-            "max_tokens": 400,
-            "temperature": 0.2,
-           }
+    data = get_payload(prompt)
 
     # Request response
-    response = requests.post(APIURL, headers=headers, json=data, stream=True)
+    response = requests.post(ADDR, headers=headers, json=data, stream=True)
+    
 
     return response
 
-requestList = ["[INST] Tell me what Lincoln Laboratory works on. [/INST]",
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(prog='Inference Client',description='Arguments for Client to connect with Inference server', add_help=False)
+    parser.add_argument("-p",  dest="port", type=int, default=8080, help="Port")
+    parser.add_argument("-h",  dest="host", type=str, default="node1", help="Host name")
+    args = parser.parse_args()
+    requestList = ["[INST] Tell me what Lincoln Laboratory works on. [/INST]",
                "[INST] Tell me what MIT works on. [/INST]",
                "[INST] Tell me what the Department of Energy works on. [/INST]",
                "[INST] Tell me about computational chemistry. [/INST]"]
-numProcs = len(requestList)
+    numProcs = len(requestList)
+    nodeName = args.host
+    port = args.port
 
+    
+    global ADDR
+    BASEURL= f"http://{nodeName}:{port}"
+    
+    ADDR = f"{BASEURL}/v1/chat/completions"
+    addrModel = f"{BASEURL}/v1/models"
 
-# Process requests
-with mp.Pool(numProcs) as p:
-    outList = p.map(post_http_request_mp, requestList)
-
-for response in outList:
+    global MODEL
+    MODEL = get_model_name(addrModel)
+    print(f" Model Name : {MODEL}")
+    print("")
+    prompt = "Tell me what Lincoln Laboratory works on."
+    response = post_http_request(prompt=prompt, api_url=ADDR, modelStr=MODEL)
     print(get_response(response))
-    print()
+
+    # Process requests
+    with mp.Pool(numProcs) as p:
+        outList = p.map(post_http_request_mp, requestList)
+
+    for response in outList:
+        print(get_response(response))
+        print()
 
