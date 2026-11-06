@@ -4,8 +4,8 @@
 #SBATCH --partition=pi4
 #SBATCH -N 1
 
-## This batch script to start the  llama-server
-## You may have to make edits to certain variables.
+## This batch script to start the  llama-server on a single node
+## You may have to make edits to certain variables PATH, MODELPATH.
 
 export LLAMACPP_PATH=/home/gridsan/software/llama.cpp
 export LLAMABIN=$LLAMACPP_PATH/build/bin

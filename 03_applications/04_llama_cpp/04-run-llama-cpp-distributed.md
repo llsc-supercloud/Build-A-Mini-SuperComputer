@@ -6,10 +6,9 @@ Here we use the TinyLlama-1.1B-Chat-v1.0 model which downloaded, converted the G
 
 NOTE: These scripts should be from your user account, not admin or root.
 
-## Start the RPC server and llama.cpp server
+## A batch script to run the RPC server and llama.cpp server on multiple nodes
 
-The following is a sbatch script to start the rpc-server and llama-server.
-See script `batch-distributed-servers.sh`.
+The following is a sbatch script to start the rpc-server and llama-server on 3 nodes.
 
 ```bash
 #!/bin/bash
@@ -36,8 +35,7 @@ PORT_NUM=50052
 NODELISTS=$SLURM_JOB_NODELIST
 echo $NODELISTS
 
-#NODENAMES=$(scontrol show hostnames | tr '\n' ',')
-echo $NODENAMES
+# Build a comma-separated list of the RPC server nodes and port as host1:port,host2:port
 NODENAMES=$( scontrol show hostnames | tr '\n' ',' )
 echo $NODENAMES
 IFS="," read -r -a nodearray <<< "$NODENAMES"
@@ -65,6 +63,15 @@ srun --nodelist=$MASTER_HOST --ntasks=1 ${LLAMABIN}/llama-server -m $MODELPATH \
   --ctx-size 2048  --rpc $NODELIST
 
 ```
+
+See script `batch-distributed-servers.sh`.
+
+## To run the script to start the RPC and llama.cpp servers on the compute nodes
+
+```
+LLsub ./batch-distributed-servers.sh
+```
+
 
 ## Test inference
 

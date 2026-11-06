@@ -4,8 +4,8 @@
 #SBATCH --partition=pi4
 #SBATCH -N 3
 
-## This batch script to start the rpc-server and llama-server
-## You may have to make edits to certain variables.
+## This batch script to start the rpc-server and llama-server on multiple nodes
+## You may have to make edits to certain variables eg MODELPATH, PATH, #SBATCH -N 3.
 
 export LLAMACPP_PATH=/home/gridsan/software/llama.cpp
 export LLAMABIN=$LLAMACPP_PATH/build/bin
@@ -30,12 +30,14 @@ NODENAMES=$( scontrol show hostnames | tr '\n' ',' )
 echo $NODENAMES
 
 #  Start the RPC servers on the other compute nodes, not MASTER_HOST
-srun --nodes=${worker_num} --ntasks=${worker_num} --exclude=$MASTER_HOST ${LLAMABIN}/rpc-server -c -p $PORT_NUM -H 0.0.0.0 -t 1 &
+RPC_SERVER=rpc-server
+[[ -f "${LLAMABIN}/ggml-rpc-server" ]] && RPC_SERVER=ggml-rpc-server
+srun --nodes=${worker_num} --ntasks=${worker_num} --exclude=$MASTER_HOST ${LLAMABIN}/$RPC_SERVER -c -p $PORT_NUM -H 0.0.0.0 -t 1 &
 #Sleep to wait for RPC servers to start up.
 sleep 120
 
 RPC_NODELIST=""
-# Create a comma-separated list host1:port,host2:port,etc that are running the RPC server
+# Create a comma-separated list host1:port,host2:port,etc that are running the RPC servers
 firsttime=1
 IFS="," read -r -a nodearray <<< "$NODENAMES"
 for i in "${nodearray[@]}"; do

@@ -5,10 +5,9 @@ Here we use the TinyLlama-1.1B-Chat-v1.0 model which downloaded, converted the G
 
 NOTE: These scripts should be from your user account, not admin or root.
 
-## Start the  llama.cpp server
+## A script to run the llama.cpp server on a single node
 
 The following is a sbatch script to start the  llama-server on single node.
-See script `batch-single-server.sh`.
 
 ```bash
 #!/bin/bash
@@ -30,7 +29,6 @@ MASTER_PORT=8080
 echo "LLAMA.CPP NODE NAME: " $MASTER_HOST
 echo "LLAMA.CPP PORT: " $MASTER_PORT
 
-
 # Run llama-server on node1
 # q8_0 is supposed to halve the cache memory compared to fp16.
 MODELPATH="$HOME/tinyllama/tinyllama-1.1B-chat-v1.0-Q4_K_M.gguf"
@@ -43,6 +41,15 @@ srun --nodelist=$MASTER_HOST --ntasks=1 ${LLAMABIN}/llama-server -m $MODELPATH \
   --spec-draft-type-v q8_0 \
   --ctx-size 2048
 
+```
+
+## Run the llama.cpp server on single node (non-distributed)
+
+See script `batch-single-server.sh`. 
+You may have to make the script executable with the chmod command - `chmod 755 batch-single-server.sh`.
+
+```
+ LLsub ./batch-single-server.sh
 ```
 
 ## Test inference
@@ -80,8 +87,3 @@ To run the script,
 python llama_inf_client.py -h node1 -p 8080
 ```
 
-## Run the llama.cpp server on single node (non-distributed)
-
-```
- LLsub ./batch-single-server.sh
-```
