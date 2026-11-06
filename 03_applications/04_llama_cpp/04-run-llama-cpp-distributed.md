@@ -47,8 +47,9 @@ for i in "${nodearray[@]}"; do
 done
 
 ## Start RPC server on node2 and node3
-echo $NODELIST
-srun --nodes=${worker_num} --ntasks=${worker_num} --exclude=$MASTER_HOST ${LLAMABIN}/rpc-server -c -p $PORT_NUM -H 0.0.0.0 -t 4 &
+RPC_SERVER=rpc-server
+[[ -f "${LLAMABIN}/ggml-rpc-server" ]] && RPC_SERVER=ggml-rpc-server
+srun --nodes=${worker_num} --ntasks=${worker_num} --exclude=$MASTER_HOST ${LLAMABIN}/$RPC_SERVER -c -p $PORT_NUM -H 0.0.0.0 -t 1 &
 
 # Run llama-server on node1
 # q8_0 is supposed to halve the cache memory compared to fp16.
