@@ -15,12 +15,12 @@ Run the script to convert the HF to FP16 GGUF format.
 
 ```
 # Convert model weights to GGUF floating point 16.
-python /home/gridsan/software/llama.cpp/convert_hf_to_gguf.py ./tinyllama --outfile tinyllama/tinyllama-1.1B-Chat-v1.0.gguf --outtype f16
+python /home/gridsan/software/llama.cpp/convert_hf_to_gguf.py ./tinyllama --outfile tinyllama/tinyllama-1.1B-chat-v1.0.gguf --outtype f16
 ```
 
 Quantize from FP16 to Q4_K_M ( 4-bit, K grouped quantization with scale/zero point, M medium precision).
 
 ```
 export PATH=/home/gridsan/software/llama.cpp/build/bin:$PATH
-llama-quantize tinyllama/tinyllama-1.1B-Chat-v1.0.gguf tinyllama/tinyllama-1.1B-Chat-v1.0_Q4_K_M.gguf Q4_K_M
+llama-quantize tinyllama/tinyllama-1.1B-chat-v1.0.gguf tinyllama/tinyllama-1.1B-chat-v1.0_Q4_K_M.gguf Q4_K_M
 ```
